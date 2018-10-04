@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Attributes.cs" />
     <Compile Include="Assets\Scripts\Battle_Input.cs" />
     <Compile Include="Assets\Scripts\ButtonHandler.cs" />
     <Reference Include="UnityEditor.StandardEvents">

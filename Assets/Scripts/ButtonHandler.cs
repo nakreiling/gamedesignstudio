@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class ButtonHandler : MonoBehaviour
 {
+    private bool turn;
     ///<summary>Placeholder delegate function for our buttonList</summary>
     public delegate void ButtonAction();
     ///<summary>Array of buttons, created from a struct, below.</summary>
@@ -10,9 +11,13 @@ public class ButtonHandler : MonoBehaviour
     ///<summary>Index reference to our currently selected button.</summary>
     public int selectedButton = 0;
     public int prevButton = 0;
+    public int selection;
+   
 
     void Start()
     {
+        
+
         // Instantiate buttonList to hold the amount of buttons we are using.
         buttonList = new MyButton[4];
         // Set up the first button, finding the game object based off its name. We also 
@@ -40,6 +45,7 @@ public class ButtonHandler : MonoBehaviour
 
     void Update()
     {
+        
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             buttonList[prevButton].image.color = Color.white;
@@ -81,22 +87,49 @@ public class ButtonHandler : MonoBehaviour
     void AttackButtonAction()
     {
         Debug.Log("Attack");
+        selection = 0;
+        foreach (Transform Choice in transform)
+        {
+            Choice.gameObject.SetActive(false);
+           
+            //anim.SetBool("attack", true);
+
+        }
     }
 
     ///<summary>This is the method that will call when selecting "Defend".</summary>
     void DefendButtonAction()
     {
         Debug.Log("Defend");
+        foreach (Transform Choice in transform)
+        {
+            Choice.gameObject.SetActive(false);
+            selection = 1;
+
+        }
     }
     ///<summary>This is the method that will call when selecting "Strike".</summary>
     void StrikeButtonAction()
     {
+
         Debug.Log("Strike");
+        foreach (Transform Choice in transform)
+        {
+            Choice.gameObject.SetActive(false);
+            selection = 2;
+
+        }
     }
     ///<summary>This is the method that will call when selecting "Counter".</summary>
     void CounterButtonAction()
     {
         Debug.Log("Counter");
+        foreach (Transform Choice in transform)
+        {
+            Choice.gameObject.SetActive(false);
+            selection = 3;
+
+        }
     }
 
 
