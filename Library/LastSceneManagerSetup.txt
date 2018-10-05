@@ -1,4 +1,8 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Scenes/TestWorld.unity
+=======
+- path: Assets/Scenes/OverWorld.unity
+>>>>>>> 71569778725d4187fdc2797870d4127191018b51
   isLoaded: 1
   isActive: 1
