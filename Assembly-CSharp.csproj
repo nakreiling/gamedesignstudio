@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{B7090FF0-8041-C805-8ABC-766A1D143FC6}</ProjectGuid>
+    <ProjectGuid>{F6F35586-41E8-A3FD-1F97-BB2643618BAD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -64,17 +64,18 @@
     <Compile Include="Assets\Attributes.cs" />
     <Compile Include="Assets\Scripts\Battle_Input.cs" />
     <Compile Include="Assets\Scripts\ButtonHandler.cs" />
+    <Compile Include="Assets\Scripts\WorldDecomposer.cs" />
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>C:/Users/Thomas/Desktop/Fall2018/4232_Studio/GameStudio/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>C:/Users/Thomas/Documents/GitHub/gamedesignstudio/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/Thomas/Desktop/Fall2018/4232_Studio/GameStudio/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/Thomas/Documents/GitHub/gamedesignstudio/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>C:/Users/Thomas/Desktop/Fall2018/4232_Studio/GameStudio/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>C:/Users/Thomas/Documents/GitHub/gamedesignstudio/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/Thomas/Desktop/Fall2018/4232_Studio/GameStudio/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/Thomas/Documents/GitHub/gamedesignstudio/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
