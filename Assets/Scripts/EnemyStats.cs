@@ -15,9 +15,10 @@ public class EnemyStats : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         PositionHealthBar();
+
 	}
 
-    public void ChangHealth(int amount)
+    public void ChangeHealth(int amount)
     {
 
         Vector3 fwd = transform.TransformDirection(Vector3.forward);

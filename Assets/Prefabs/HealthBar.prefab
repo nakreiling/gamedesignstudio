@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224301034743972000}
   - component: {fileID: 222213567975054864}
   - component: {fileID: 114553757930959764}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224893541342237972}
   - component: {fileID: 114637087585901362}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: HealthSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 223192595907165730}
   - component: {fileID: 114877205056885304}
   - component: {fileID: 114073618627175394}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224503668532273340}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: HealthFill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 224784518260970248}
   - component: {fileID: 222458857801050876}
   - component: {fileID: 114514014273812650}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
