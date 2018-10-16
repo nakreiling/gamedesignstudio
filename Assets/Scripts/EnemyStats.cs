@@ -22,22 +22,16 @@ public class EnemyStats : MonoBehaviour {
     {
 
         Vector3 fwd = transform.TransformDirection(Vector3.forward);
-        Debug.DrawRay(transform.position, fwd * 50, Color.yellow);
-        //Vector3 startPos = new Vector3(-1.46f, 3f, -3.14f);
-        // RaycastHit hit;
-        // int layerMask = 1 << 8;
-        // layerMask = ~layerMask;
-        // Debug.DrawRay(startPos, Vector3.forward * 20, Color.green, 50000);
-
+        
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        healthFill.value = currentHealth / maxHealth;
+        healthFill.value = currentHealth; //Displays health remaining
     }
     private void PositionHealthBar()
     {
         Vector3 currentPos = transform.position;
         healthBar.position = new Vector3(currentPos.x, currentPos.y + healthBarOffset, currentPos.z);
 
-        //healthBar.LookAt(Camera.main.transform);
+        healthBar.LookAt(GameObject.FindWithTag("MainCamera").transform);
     }
 }

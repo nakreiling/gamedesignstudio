@@ -5,7 +5,7 @@ public class ButtonHandler : MonoBehaviour
 {
    // public GameObject currentHitObject;
    // private float currentHitDistance;
-    private bool turn;
+    
     ///<summary>Placeholder delegate function for our buttonList</summary>
     public delegate void ButtonAction();
     ///<summary>Array of buttons, created from a struct, below.</summary>
@@ -24,7 +24,7 @@ public class ButtonHandler : MonoBehaviour
     
     RaycastHit hit;
     int layerMask = 1 << 20;
-
+    
 
     void Start()
     {
@@ -109,6 +109,7 @@ public class ButtonHandler : MonoBehaviour
         {
             buttonList[selectedButton].action();
             buttonList[selectedButton].image.color = Color.yellow;
+            Debug.Log("PRESSED");
         }
     }
 
@@ -116,15 +117,17 @@ public class ButtonHandler : MonoBehaviour
     ///<summary>This is the method that will call when selecting "Attack".</summary>
     void AttackButtonAction()
     {
-
+        int count = 0;
         Debug.Log("Attack");
         if (GameObject.FindWithTag("Enemy"))
         {
-            Debug.Log(GameObject.FindWithTag("Enemy"));
+
+            
+           // Debug.Log(GameObject.FindWithTag("Enemy"));
             EnemyStats stats;
             if(stats = GameObject.FindWithTag("Enemy").GetComponent<EnemyStats>())
             {
-                stats.ChangeHealth(-5);
+                stats.ChangeHealth(-20);
             }
 
         } 
@@ -152,8 +155,23 @@ public class ButtonHandler : MonoBehaviour
     ///<summary>This is the method that will call when selecting "Strike".</summary>
     void StrikeButtonAction()
     {
-
+        int count = 0;
         Debug.Log("Strike");
+       
+        if (GameObject.FindWithTag("Enemy"))
+        {
+            count++;
+            Debug.Log(count);
+            //Debug.Log(GameObject.FindWithTag("Enemy"));
+            EnemyStats stats;
+            if (stats = GameObject.FindWithTag("Enemy").GetComponent<EnemyStats>())
+            {
+                stats.ChangeHealth(-40);
+
+            }
+            
+
+        }
         foreach (Transform Choice in transform)
         {
             Choice.gameObject.SetActive(false);
