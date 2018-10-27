@@ -3,7 +3,9 @@ using UnityEngine.UI;
 
 public class ButtonHandler : MonoBehaviour
 {
-    private bool turn;
+   // public GameObject currentHitObject;
+   // private float currentHitDistance;
+    
     ///<summary>Placeholder delegate function for our buttonList</summary>
     public delegate void ButtonAction();
     ///<summary>Array of buttons, created from a struct, below.</summary>
@@ -12,11 +14,22 @@ public class ButtonHandler : MonoBehaviour
     public int selectedButton = 0;
     public int prevButton = 0;
     public int selection;
-   
+    Vector3 myVector = new Vector3(-2f, .5f, -3.14f);
+    Vector3 enemyVector = new Vector3(2f, .5f, -3.14f);
+
+   // public float sphereRadius = 10f;
+   // public float maxDistance=  5f;
+   // public Vector3 origin;
+   //     private Vector3 dir;
+    
+    RaycastHit hit;
+    int layerMask = 1 << 20;
+    
 
     void Start()
     {
-        
+
+       
 
         // Instantiate buttonList to hold the amount of buttons we are using.
         buttonList = new MyButton[4];
@@ -46,6 +59,23 @@ public class ButtonHandler : MonoBehaviour
     void Update()
     {
         
+        // Raycast thing = (myVector, enemyVector);
+        //  Debug.DrawLine(myVector, enemyVector, Color.green);
+       /* origin = transform.position;
+        dir = transform.forward;
+        if(Physics.SphereCast(origin, sphereRadius, dir, out hit, maxDistance, layerMask, QueryTriggerInteraction.UseGlobal))
+        {
+            currentHitObject = hit.transform.gameObject;
+            currentHitDistance = hit.distance;
+
+        }
+        else
+        {
+            currentHitDistance = maxDistance;
+            currentHitObject = null;
+        }
+        */
+
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             buttonList[prevButton].image.color = Color.white;
@@ -79,6 +109,7 @@ public class ButtonHandler : MonoBehaviour
         {
             buttonList[selectedButton].action();
             buttonList[selectedButton].image.color = Color.yellow;
+            Debug.Log("PRESSED");
         }
     }
 
@@ -86,15 +117,28 @@ public class ButtonHandler : MonoBehaviour
     ///<summary>This is the method that will call when selecting "Attack".</summary>
     void AttackButtonAction()
     {
+        int count = 0;
         Debug.Log("Attack");
-        selection = 0;
-        foreach (Transform Choice in transform)
+        if (GameObject.FindWithTag("Enemy"))
         {
-            Choice.gameObject.SetActive(false);
-           
-            //anim.SetBool("attack", true);
 
-        }
+            
+           // Debug.Log(GameObject.FindWithTag("Enemy"));
+            EnemyStats stats;
+            if(stats = GameObject.FindWithTag("Enemy").GetComponent<EnemyStats>())
+            {
+                stats.ChangeHealth(-20);
+            }
+
+        } 
+
+            foreach (Transform Choice in transform)
+            {
+                Choice.gameObject.SetActive(false);
+                selection = 0;
+
+            }
+        
     }
 
     ///<summary>This is the method that will call when selecting "Defend".</summary>
@@ -111,8 +155,23 @@ public class ButtonHandler : MonoBehaviour
     ///<summary>This is the method that will call when selecting "Strike".</summary>
     void StrikeButtonAction()
     {
-
+        int count = 0;
         Debug.Log("Strike");
+       
+        if (GameObject.FindWithTag("Enemy"))
+        {
+            count++;
+            Debug.Log(count);
+            //Debug.Log(GameObject.FindWithTag("Enemy"));
+            EnemyStats stats;
+            if (stats = GameObject.FindWithTag("Enemy").GetComponent<EnemyStats>())
+            {
+                stats.ChangeHealth(-40);
+
+            }
+            
+
+        }
         foreach (Transform Choice in transform)
         {
             Choice.gameObject.SetActive(false);
@@ -131,6 +190,13 @@ public class ButtonHandler : MonoBehaviour
 
         }
     }
+
+    /*private void OnDrawGizmosSelected() {
+        Gizmos.color = Color.red;
+        Debug.DrawLine(origin, origin + dir * currentHitDistance);
+        Gizmos.DrawWireSphere(origin + dir * currentHitDistance, sphereRadius);
+    }*/
+
 
 
     ///<summary>A struct to represent individual buttons. This makes it easier to wrap
