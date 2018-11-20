@@ -61,12 +61,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Attributes.cs" />
     <Compile Include="Assets\GridMove.cs" />
+    <Compile Include="Assets\Scripts\Activate.cs" />
+    <Compile Include="Assets\Scripts\ActivateDefense.cs" />
+    <Compile Include="Assets\Scripts\AnimScript.cs" />
+    <Compile Include="Assets\Scripts\Attributes.cs" />
     <Compile Include="Assets\Scripts\Battle_Input.cs" />
     <Compile Include="Assets\Scripts\BulletBehaviour.cs" />
     <Compile Include="Assets\Scripts\ButtonHandler.cs" />
     <Compile Include="Assets\Scripts\EnemyStats.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\PlayerControllerRigidBody.cs" />
     <Compile Include="Assets\Scripts\PlayerControllerTransform.cs" />
     <Compile Include="Assets\Scripts\PlayerWeapon.cs" />

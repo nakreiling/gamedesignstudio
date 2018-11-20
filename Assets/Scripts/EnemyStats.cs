@@ -17,8 +17,12 @@ public class EnemyStats : MonoBehaviour {
         PositionHealthBar();
 
 	}
+    public float getHealth()
+    {
+        return currentHealth;
+    }
 
-    public void ChangeHealth(int amount)
+    public void ChangeHealth(float amount)
     {
 
         Vector3 fwd = transform.TransformDirection(Vector3.forward);
