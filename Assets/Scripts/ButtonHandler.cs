@@ -198,7 +198,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                 //Debug.Log("PRESSED");
                 action = GameObject.FindWithTag("Enemy").GetComponent<EnemyActions>();
 
-                move = Random.Range(1, 3); //chooses a number between 1 and 4 //neeed 5
+                move = Random.Range(1, 5); //chooses a number between 1 and 4 //neeed 5
                 //Set the appropiate methods
                 if (move == 1)
                 {
@@ -302,7 +302,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
 
                 action = GameObject.FindWithTag("Enemy").GetComponent<EnemyActions>();
 
-                move = Random.Range(1, 5); //chooses a number between 1 and 4 
+                move = 2;// Random.Range(1, 5); //chooses a number between 1 and 4 
                 counterFlag = false;
 
                 buttonList[selectedButton].action();
@@ -334,7 +334,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
 
                 //Debug.Log(strikeFlag);
 
-               
+                
 
                 // GameObject[] gos = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[]; //will return an array of all GameObjects in the scene
                 foreach (GameObject go in gos)

@@ -33,6 +33,9 @@ public class EnemyActions : MonoBehaviour {
     public ChargeDelegate giveUpMethod;
     public AtkMagicDelegate defMagMethod;
 
+    //Var
+    public static bool dmgDone;
+
     private void Start()
     {
        
@@ -144,6 +147,7 @@ public class EnemyActions : MonoBehaviour {
     public void SkeletonStrikeButtonAction()
     {
         bool dmgDone=false;
+        
         enemyStats = GameObject.FindWithTag("Enemy").GetComponent<Stats>();
         playerStats = GameObject.FindWithTag("Player").GetComponent<Stats>();
 
@@ -156,10 +160,10 @@ public class EnemyActions : MonoBehaviour {
                 enemyStats.ChangeHealth(-99);
                 dmgDone = true;
                 Debug.Log("GET FUCKED");
-                PlayerActions.isCountering = false;
+               
                 
             }
-            else if(PlayerActions.isCountering ==false) {
+            else {
               //  Debug.Log("MESGSHD" + ButtonHandler.counterFlag);
                     {
                     if (enemyPhysicalAtkBuff == true && dmgDone ==false)
@@ -183,6 +187,7 @@ public class EnemyActions : MonoBehaviour {
 
             }
             ButtonHandler.counterFlag = false;
+            PlayerActions.isCountering = false;
 
         }
 

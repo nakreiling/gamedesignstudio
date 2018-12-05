@@ -55,6 +55,6 @@ public class Stats : MonoBehaviour {
 
 
 
-        healthBar.LookAt(GameObject.FindWithTag("MainCamera").transform);
+        //healthBar.LookAt(GameObject.FindWithTag("MainCamera").transform);
     }
 }

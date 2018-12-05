@@ -311,7 +311,9 @@ public class PlayerActions : MonoBehaviour
 
     public void ToonCounterButtonAction()
     {
+        
         isCountering = true;
+        /*
         Debug.Log(ButtonHandler.strikeFlag + " is the name");  
         if (ButtonHandler.strikeFlag == true) //counter success!
         {
@@ -319,6 +321,7 @@ public class PlayerActions : MonoBehaviour
             {
                 Debug.Log("Counter success");
                 enemyStats.ChangeHealth(-99);
+                EnemyActions.dmgDone = true;
 
             }
 
@@ -328,8 +331,10 @@ public class PlayerActions : MonoBehaviour
         else
         {
             Debug.Log("Counter fail");
+            isCountering = false;
         }
        // Debug.Log("Countering");
+       */
     }
     public void ToonGiveUpButtonAction()
     {
