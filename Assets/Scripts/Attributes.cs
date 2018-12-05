@@ -7,6 +7,8 @@ public class Attributes : MonoBehaviour {
     [SerializeField] private float attack;
     [SerializeField] private float defense;
     [SerializeField] private float strike;
+
+
     
     public float getAttack()
     {
@@ -23,19 +25,21 @@ public class Attributes : MonoBehaviour {
     }
 
 
-    void changeStrike(float amount)
+  public void changeStrike(float amount)
     {
         strike = strike*amount;
     }
-    void changeAttack(float amount)
+   public void changeAttack(float amount)
     {
         attack = attack * amount;
     }
-    void changeDefense(float amount)
+   public float changeDefense(float amount)
     {
         defense = defense * amount;
+        return defense;
     }
-   
+
+    
 
 
 }

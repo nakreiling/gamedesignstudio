@@ -18,7 +18,7 @@ public class Battle_Input : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        thingy = GetComponent<ButtonHandler>().selection; //Cannot access variable in ButtonHandler See prof.
+       // thingy = GetComponent<ButtonHandler>().selection; //Cannot access variable in ButtonHandler See prof.
         if (thingy == 0) //attack
         {
 

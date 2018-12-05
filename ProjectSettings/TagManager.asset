@@ -8,6 +8,7 @@ TagManager:
   - Choice
   - DefenseChoice
   - OffenseChoice
+  - Death
   layers:
   - Default
   - TransparentFX
