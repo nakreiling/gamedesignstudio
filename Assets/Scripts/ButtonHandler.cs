@@ -302,7 +302,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
 
                 action = GameObject.FindWithTag("Enemy").GetComponent<EnemyActions>();
 
-                move = 2;// Random.Range(1, 5); //chooses a number between 1 and 4 
+                move =  Random.Range(1, 5); //chooses a number between 1 and 4 
                 counterFlag = false;
 
                 buttonList[selectedButton].action();
