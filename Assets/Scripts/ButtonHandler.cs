@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System; //to perform duh maths
+using Random = UnityEngine.Random;
 
 public class ButtonHandler : MonoBehaviour //change name to TurnHandler when merged
 {
@@ -196,10 +198,21 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                 //}
                 //}
                 //Debug.Log("PRESSED");
+
+                //To do: Create FSM based on Health of enemy and the status of the Player Unit
+
                 action = GameObject.FindWithTag("Enemy").GetComponent<EnemyActions>();
+                
+                //should I convert this float into an integer?
+                
+
+
 
                 move = Random.Range(1, 5); //chooses a number between 1 and 4 //neeed 5
                 //Set the appropiate methods
+                
+                // consider replacing with a Switch Statement instead
+                
                 if (move == 1)
                 {
                     enemyMove = "defend";
@@ -225,6 +238,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                     action.defMagMethod();
                     
                 }
+                
 
                 buttonList[selectedButton].action();
                 buttonList[selectedButton].image.color = Color.yellow;
@@ -302,13 +316,129 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
 
                 action = GameObject.FindWithTag("Enemy").GetComponent<EnemyActions>();
 
-                move =  Random.Range(1, 5); //chooses a number between 1 and 4 
+                //move =  Random.Range(1, 5); //chooses a number between 1 and 4 
                 counterFlag = false;
 
                 buttonList[selectedButton].action();
                 buttonList[selectedButton].image.color = Color.yellow; //Do action after the changes are made
 
+                float health = GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth(); //GameObject.FindWithTag("Player").GetComponent<Stats>.getHealth() //Better way to do this?
+                int health2 = (int)Math.Ceiling(health);//why was this such a pain in the arse?
+
+                //Include an if statement that checks for the defense of the Player Unit, if it is "high" then use else if for "med" and else for "low"
+                //in the if statement encapsulate the Switch for an engagement with a unit that has different attributes
+                switch (health2) //why isn't this taking Health as in integer?
+                {
+                    
+                    case int n when n >= 100:
+                        //something something
+                        int dice = Random.Range(1, 102); //so use UnityEngine Random is the correct way?
+                        if(dice <= 13)
+                        {
+                            enemyMove = "Attack";
+                            action.attackMethod();
+                        }
+                        else if (dice >=14 && dice > 28)
+                        {
+                            enemyMove = "Strike";
+                            strikeFlag = true;
+                            action.strikeMethod();                            
+                        }
+                        else if(dice>=28 && dice < 42)
+                        {
+                            action.chargeMethod();
+                            enemyMove = "charge";
+                        }
+                        else
+                        {
+                            action.atkMagMethod();
+                            enemyMove = "atkMagic";
+                        }
+                    break;
+
+                    case int n when n < 100 && n >= 75:
+                        //int dice = Random.Range(1, 102); //so use UnityEngine Random is the correct way?
+                        dice = Random.Range(1, 104);
+                        if (dice <= 10)
+                        {
+                            enemyMove = "Attack";
+                            action.attackMethod();
+                        }
+                        else if (dice >= 11 && dice > 41)
+                        {
+                            enemyMove = "Strike";
+                            strikeFlag = true;
+                            action.strikeMethod();
+                        }
+                        else if (dice >= 41 && dice < 83)
+                        {
+                            action.chargeMethod();
+                            enemyMove = "charge";
+                        }
+                        else
+                        {
+                            action.atkMagMethod();
+                            enemyMove = "atkMagic";
+                        }
+
+                        break;
+
+                    case int n when n < 74 && n >= 50:
+                        dice = Random.Range(1, 104);
+                        if (dice <= 25)
+                        {
+                            enemyMove = "Attack";
+                            action.attackMethod();
+                        }
+                        else if (dice >= 26 && dice > 66)
+                        {
+                            enemyMove = "Strike";
+                            strikeFlag = true;
+                            action.strikeMethod();
+                        }
+                        else if (dice >= 67 && dice < 87)
+                        {
+                            action.chargeMethod();
+                            enemyMove = "charge";
+                        }
+                        else
+                        {
+                            action.atkMagMethod();
+                            enemyMove = "atkMagic";
+                        }
+                        break;
+                    case int n when (n < 49):
+                        dice = Random.Range(1, 104);
+                        if (dice <= 40)
+                        {
+                            enemyMove = "Attack";
+                            action.attackMethod();
+                        }
+                        else if (dice >= 41 && dice > 81)
+                        {
+                            enemyMove = "Strike";
+                            strikeFlag = true;
+                            action.strikeMethod();
+                        }
+                        else if (dice >= 82 && dice < 92)
+                        {
+                            action.chargeMethod();
+                            enemyMove = "charge";
+                        }
+                        else
+                        {
+                            action.atkMagMethod();
+                            enemyMove = "atkMagic";
+                        }
+
+                        break;
+                }
+
+
+
+
                 //Set the appropiate methods
+                /*
                 if (move == 1)
                 {
                     action.attackMethod(); //call the attack action from the skeleton script 
@@ -331,10 +461,10 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                     action.atkMagMethod();
                     enemyMove = "atkMagic";
                 }
-
+                */
                 //Debug.Log(strikeFlag);
 
-                
+
 
                 // GameObject[] gos = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[]; //will return an array of all GameObjects in the scene
                 foreach (GameObject go in gos)

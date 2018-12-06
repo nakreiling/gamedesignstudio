@@ -46,7 +46,7 @@ public class EnemyActions : MonoBehaviour {
            
             GameObject enemy = GameObject.FindWithTag("Enemy");
             Debug.Log(enemy.name);
-            //find out which enemy it is...set methods according to spefic model
+            //find out which enemy it is...set methods according to specfic model
             if (enemy.name == "Skeleton"){
                 attackMethod = SkeletonAttackButtonAction; //test in Button Handler by calling the variable
                 strikeMethod = SkeletonStrikeButtonAction;
