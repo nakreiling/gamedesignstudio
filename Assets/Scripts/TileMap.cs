@@ -188,7 +188,20 @@ public class TileMap : MonoBehaviour {
     public bool UnitCanEnterTile(int x, int y) {
         // test unit's walk/fly/hover type against various
         // terrain flags to see if they can enter tile
-        return tileTypes[tiles[x, y]].isWalkable;
+        return tileTypes[tiles[x, y]].isWalkable && TileNotOccupied(x, y);
+    }
+
+    public bool TileNotOccupied(int x, int y) {
+        for (int k = 0; k < selectedUnit.Length; k++) {
+            int unitX = selectedUnit[k].GetComponent<Unit>().tileX;
+            int unitY = selectedUnit[k].GetComponent<Unit>().tileY;
+            if (x == unitX && y == unitY) {
+                //Debug.Log("There's someone there!");
+                return false;
+            }
+        }
+        //Debug.Log("By all means...");
+        return true;
     }
 
     public void GeneratePathTo(int x, int y, int n) {
