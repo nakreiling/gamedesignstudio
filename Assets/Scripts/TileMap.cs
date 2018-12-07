@@ -39,23 +39,58 @@ public class TileMap : MonoBehaviour {
         }
 
         // make that bitchass swamp broooo
-        for (int x = 3; x <= 5; x++) {
-            for (int y = 0; y < 4; y++) {
+        for (int x = 3; x <= 8; x++) {
+            for (int y = 1; y < 19; y++) {
                 tiles[x, y] = 1;
             }
         }
 
-        // mountain range that looks like the U
-        tiles[4, 4] = 2;
-        tiles[5, 4] = 2;
-        tiles[6, 4] = 2;
-        tiles[7, 4] = 2;
-        tiles[8, 4] = 2;
+        // make another swamp
+        /*for (int x = 10; x <= 16; x++) {
+            for (int y = 15; y < 19; y++) {
+                tiles[x, y] = 1;
+            }
+        }*/
 
-        tiles[4, 5] = 2;
-        tiles[4, 6] = 2;
-        tiles[8, 5] = 2;
-        tiles[8, 6] = 2;
+        // add a river
+        for (int x = 0; x < 20; x++) {
+            for (int y = 9; y < 11; y++) {
+                if (x != 7 && x != 17)
+                    tiles[x, y] = 3;
+            }
+        }
+
+        // diagonal mountain range below river
+        tiles[11, 7] = 2;
+        tiles[12, 7] = 2;
+        tiles[12, 6] = 2;
+        tiles[13, 6] = 2;
+        tiles[13, 5] = 2;
+        tiles[14, 5] = 2;
+        tiles[14, 4] = 2;
+        tiles[15, 4] = 2;
+        tiles[15, 3] = 2;
+        tiles[16, 3] = 2;
+        tiles[16, 2] = 2;
+        tiles[17, 2] = 2;
+        tiles[17, 1] = 2;
+        tiles[18, 1] = 2;
+
+        // diagonal mountian range above river
+        tiles[11, 12] = 2;
+        tiles[12, 12] = 2;
+        tiles[12, 13] = 2;
+        tiles[13, 13] = 2;
+        tiles[13, 14] = 2;
+        tiles[14, 14] = 2;
+        tiles[14, 15] = 2;
+        tiles[15, 15] = 2;
+        tiles[15, 16] = 2;
+        tiles[16, 16] = 2;
+        tiles[16, 17] = 2;
+        tiles[17, 17] = 2;
+        tiles[17, 18] = 2;
+        tiles[18, 18] = 2;
     }
 
     public float CostToEnterTile(int sourceX, int sourceY, int targetX, int targetY) {
