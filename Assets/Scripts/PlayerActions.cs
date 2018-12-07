@@ -12,6 +12,9 @@ public class PlayerActions : MonoBehaviour
     int turnCheck;
    public bool physicalAtkBuff, physicalDefBuff;
 
+    [SerializeField] private TimeLineScript attackP;
+
+
     // public static ArrayList enemyCollection = new ArrayList();
     public delegate void AttackDelegate();
     public delegate void StrikeDelegate();
@@ -67,6 +70,27 @@ public class PlayerActions : MonoBehaviour
     public void ToonAttackButtonAction()
     {
 
+        GameManager.timelineActive = true;
+        attackP.PlayFromTimeLines(0);
+
+        //TrueToonAttackButtonAction();
+
+       
+
+       // foreach (Transform Choice in transform)
+       // {
+       //     // Debug.Log("DELETE");
+       //     Choice.gameObject.SetActive(false);
+       //     selection = 0;
+
+      //  }
+
+    }
+
+    
+
+    public void TrueToonAttackButtonAction()
+    {
         Debug.Log("YOU are attacking!");
         float attackAmount = 0;
         float defenseAmount = 0;
@@ -75,9 +99,19 @@ public class PlayerActions : MonoBehaviour
         Attributes defense;
         Stats health;
         int count = 0;
-       // Debug.Log("Attack");
+        // Debug.Log("Attack");
         if (GameObject.FindWithTag("Enemy"))
         {
+
+            // TimeLineScript clip = GetComponent<TimeLineScript>();
+            //clip.PlayFromTimeLines(0); //Error is on this line
+
+            GameManager.timelineActive = true;
+
+
+
+
+            //  TimeLineScript.PlayFromTimeLines(0);//timeline atk soldier
             GameObject enemy = GameObject.FindWithTag("Enemy");
 
             if (attack = GameObject.FindWithTag("Player").GetComponent<Attributes>()) //if the player exists get that object's atk value
@@ -113,8 +147,8 @@ public class PlayerActions : MonoBehaviour
                 // Debug.Log(attackFlag);
 
 
-               
 
+                GameManager.timelineActive = false;//should now bring back the UI
 
 
             }
@@ -135,24 +169,15 @@ public class PlayerActions : MonoBehaviour
                     ToonRevertAttack(); //decrease the power buff
                     physicalAtkBuff = false;
                 }
-               
+
 
             }
 
         }
-
-       // foreach (Transform Choice in transform)
-       // {
-       //     // Debug.Log("DELETE");
-       //     Choice.gameObject.SetActive(false);
-       //     selection = 0;
-
-      //  }
-
     }
 
 
-    public void ToonStrikeButtonAction()
+        public void ToonStrikeButtonAction()
     {
        
         bool dmgDone=false;
@@ -371,6 +396,8 @@ public class PlayerActions : MonoBehaviour
        
 
     }
+   
+
     IEnumerator Buffer()
     {
 

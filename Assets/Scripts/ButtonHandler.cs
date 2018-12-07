@@ -133,7 +133,11 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                 DefMag.SetActive(false);
                 giveUp.SetActive(false);
 
-                ButtonCreate();
+                
+                
+                    ButtonCreate();
+                
+                
 
             }
 
@@ -175,15 +179,19 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
 
                 //buttonList[selectedButton].action();
                 //buttonList[selectedButton].image.color = Color.yellow;
-
-                foreach (GameObject go in gos)
+                if(GameManager.timelineActive == false)
                 {
-                    if (go.layer == (9) && go.CompareTag("OffenseChoice"))
+                    foreach (GameObject go in gos)
                     {
-                        go.SetActive(false); //turns off the button objects :o only when space is pressed
-                                             // Debug.Log("DESTROY BUTTONS-PLAYER CHOICE MADE");
+                        if (go.layer == (9) && go.CompareTag("OffenseChoice"))
+                        {
+                            go.SetActive(false); //turns off the button objects :o only when space is pressed
+                                                 // Debug.Log("DESTROY BUTTONS-PLAYER CHOICE MADE");
+                        }
                     }
+
                 }
+                
 
                 // GameObject[] gos = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[]; //will return an array of all GameObjects in the scene
 
@@ -198,7 +206,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                 //Debug.Log("PRESSED");
                 action = GameObject.FindWithTag("Enemy").GetComponent<EnemyActions>();
 
-                move = Random.Range(1, 5); //chooses a number between 1 and 4 //neeed 5
+                move = Random.Range(1, 3); //chooses a number between 1 and 4 //neeed 5
                 //Set the appropiate methods
                 if (move == 1)
                 {
@@ -242,18 +250,21 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
         {
             //counterFlag = false; //reset upon turn switch so no repeat guarentee
             //GameManager.rand = 2; THIS WAS THE PROBLEM
-
-            foreach (GameObject go in gos)
+            if(GameManager.timelineActive == false)
             {
-                if (go.layer == (9) && go.CompareTag("DefenseChoice"))
+                foreach (GameObject go in gos)
                 {
-                    go.SetActive(true); //turns on/off the button objects 
+                    if (go.layer == (9) && go.CompareTag("DefenseChoice"))
+                    {
+                        go.SetActive(true); //turns on/off the button objects 
+
+                    }
 
                 }
-
             }
+            
 
-            if (buttonsMade == false)
+            if (buttonsMade == false) //watch it
             {
                 ButtonCreate();
             }
@@ -370,6 +381,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
     {
 
 
+
         if (isPlayerTurn == true)
         {
             foreach (GameObject go in gos)
@@ -382,7 +394,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
 
             }
         }
-        else
+        else 
             foreach (GameObject go in gos)
             {
                 if (go.layer == (9) && go.CompareTag("DefenseChoice"))
@@ -391,6 +403,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                                         // Debug.Log("CREATE BUTTONS");
                 }
             }
+       
 
 
         // Instantiate buttonList to hold the amount of buttons we are using.

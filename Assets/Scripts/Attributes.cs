@@ -41,5 +41,24 @@ public class Attributes : MonoBehaviour {
 
     
 
+    public bool ChangeBool(bool x)
+    {
+        bool timelineActive=false;
+
+        if (timelineActive == true)
+        {
+            timelineActive = false;
+        }
+        else
+        {
+            Debug.Log("You shouldn't be here");
+           timelineActive = false;
+        }
+
+        return timelineActive;
+    }
+
+
+
 
 }

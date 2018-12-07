@@ -7,6 +7,8 @@ public class EnemyActions : MonoBehaviour {
     Stats enemyStats;
     Stats playerStats;
 
+    [SerializeField] private TimeLineScript attackE;
+
     int turnCheck;
     public bool enemyPhysicalAtkBuff, enemyPhysicalDefBuff;
 
@@ -79,6 +81,9 @@ public class EnemyActions : MonoBehaviour {
         Debug.Log("Attack-Skeleton");
         if (GameObject.FindWithTag("Player"))
         {
+            attackE.PlayFromTimeLines(1);
+
+
             GameObject player = GameObject.FindWithTag("Player");
 
             if (attack = GameObject.FindWithTag("Enemy").GetComponent<Attributes>()) //if the player exists get that object's atk value

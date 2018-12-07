@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\AnimScript.cs" />
     <Compile Include="Assets\Scripts\Attributes.cs" />
     <Compile Include="Assets\Scripts\Battle_Input.cs" />
+    <Compile Include="Assets\Scripts\BoolSwitch.cs" />
     <Compile Include="Assets\Scripts\ButtonHandler.cs" />
     <Compile Include="Assets\Scripts\EnemyActions.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
@@ -75,7 +76,18 @@
     <Compile Include="Assets\Scripts\PlayerControllerTransform.cs" />
     <Compile Include="Assets\Scripts\PlayerWeapon.cs" />
     <Compile Include="Assets\Scripts\Stats.cs" />
+    <Compile Include="Assets\Scripts\TimeLineScript.cs" />
     <Compile Include="Assets\Scripts\WorldDecomposer.cs" />
+    <Compile Include="Assets\TimelineEvents\Demo\DemoScripts\NavMeshFollower.cs" />
+    <Compile Include="Assets\TimelineEvents\Demo\DemoScripts\Robot.cs" />
+    <Compile Include="Assets\TimelineEvents\Demo\DemoScripts\UIManager.cs" />
+    <Compile Include="Assets\TimelineEvents\Demo\DemoScripts\UIType.cs" />
+    <Compile Include="Assets\TimelineEvents\Scripts\Extensions\PrimitiveExtensions.cs" />
+    <Compile Include="Assets\TimelineEvents\Scripts\TimelineEvents\EventInvocationInfo.cs" />
+    <Compile Include="Assets\TimelineEvents\Scripts\TimelineEvents\TimelineEventBehaviour.cs" />
+    <Compile Include="Assets\TimelineEvents\Scripts\TimelineEvents\TimelineEventClip.cs" />
+    <Compile Include="Assets\TimelineEvents\Scripts\TimelineEvents\TimelineEventMixerBehaviour.cs" />
+    <Compile Include="Assets\TimelineEvents\Scripts\TimelineEvents\TimelineEventTrack.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/Thomas/Documents/GitHub/gamedesignstudio/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
