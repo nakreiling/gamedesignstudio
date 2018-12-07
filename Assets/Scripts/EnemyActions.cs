@@ -76,7 +76,7 @@ public class EnemyActions : MonoBehaviour {
         Attributes defense;
         Stats health;
         int count = 0;
-        Debug.Log("Attack-Skeleton");
+        Debug.Log("Attack Session for Skeleton");
         if (GameObject.FindWithTag("Player"))
         {
             GameObject player = GameObject.FindWithTag("Player");
