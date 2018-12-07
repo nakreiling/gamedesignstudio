@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; //added to be able to switch between Battle and Overworld scences
 
 public class GameManager : MonoBehaviour {
     public static bool playerTurn;
@@ -80,9 +81,26 @@ public class GameManager : MonoBehaviour {
         else if(GameObject.FindGameObjectsWithTag("Enemy").Length < 1)
         {
             rockEnemy.SetActive(true);
+        }//adding some statements to account for when a units health is 0, Concern: Units health only decreases in battle right?
+        else if(GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth() <= 0)
+        {
+            GameObject.FindWithTag("Player").SetActive(false);
+            rockPlayer.SetActive(true); //2nd verse same as the first, need a time buffer and then unload the scene, load overworld
+            //To do: Timed Buffer
+            Debug.Log("I am the Player and its time to leave!");
+            SceneManager.LoadScene("OverWorld"); //, LoadSceneMode.Single); //might need to switch to Asynchronous mode
         }
-        
-
+        else if (GameObject.FindWithTag("Enemy").GetComponent<Stats>().getHealth() <= 0)
+        {  //To do: Delete the Unit from the overall Unit list
+            GameObject.FindWithTag("Enemy").SetActive(false); //So... if this works....nullreference error? should have a time buffer and unload the scene
+            rockEnemy.SetActive(true); //I think we have to explicitly remove the NPC as well?
+            Debug.Log("I'm out of Here! Love Skelly");
+            SceneManager.LoadScene("OverWorld"); //, LoadSceneMode.Single);
+        }
+        //else if (GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth() <= 0)
+        //{
+            
+        //}
 
     }
 
