@@ -4,22 +4,27 @@ using UnityEngine;
 
 public class TileMap : MonoBehaviour {
 
-    public GameObject selectedUnit;
+    public GameObject[] selectedUnit;
     public TileType[] tileTypes;
 
     int[,] tiles;
     Node[,] graph;
+    public int unitSelector;
 
-    int mapSizeX = 10;
-    int mapSizeY = 10;
+    int mapSizeX = 20;
+    int mapSizeY = 20;
 
     void Start () {
-        selectedUnit.GetComponent<Unit>().tileX = (int)selectedUnit.transform.position.x;
-        selectedUnit.GetComponent<Unit>().tileY = (int)selectedUnit.transform.position.y;
-        selectedUnit.GetComponent<Unit>().map = this;
+        for (int x = 0; x < selectedUnit.Length; x++) {
+            selectedUnit[x].GetComponent<Unit>().tileX = (int)selectedUnit[x].transform.position.x;
+            selectedUnit[x].GetComponent<Unit>().tileY = (int)selectedUnit[x].transform.position.y;
+            selectedUnit[x].GetComponent<Unit>().map = this;
+            Debug.Log("Hello");
+        }
         GenerateMapData();
         GeneratePathFindingGraph();
         GenerateMapVisuals();
+        unitSelector = 0;
     }
 
     void GenerateMapData() {
@@ -151,13 +156,13 @@ public class TileMap : MonoBehaviour {
         return tileTypes[tiles[x, y]].isWalkable;
     }
 
-    public void GeneratePathTo(int x, int y) {
+    public void GeneratePathTo(int x, int y, int n) {
         //selectedUnit.GetComponent<Unit>().tileX = x;
         //selectedUnit.GetComponent<Unit>().tileY = y;
         //selectedUnit.transform.position = TileCoordToWorldCoord(x, y);
 
         // clear out our unit's old path
-        selectedUnit.GetComponent<Unit>().currentPath = null;
+        selectedUnit[n].GetComponent<Unit>().currentPath = null;
 
         if (UnitCanEnterTile(x, y) == false) {
             // quit out since we clicked on a mountian or water..
@@ -170,8 +175,8 @@ public class TileMap : MonoBehaviour {
 
         List<Node> unvisited = new List<Node>();
         Node source = graph[
-                            selectedUnit.GetComponent<Unit>().tileX,
-                            selectedUnit.GetComponent<Unit>().tileY];
+                            selectedUnit[n].GetComponent<Unit>().tileX,
+                            selectedUnit[n].GetComponent<Unit>().tileY];
 
         Node target = graph[x, y];
 
@@ -234,6 +239,14 @@ public class TileMap : MonoBehaviour {
         // sooo reverse that bitch!
         currentPath.Reverse();
 
-        selectedUnit.GetComponent<Unit>().currentPath = currentPath;
+        selectedUnit[n].GetComponent<Unit>().currentPath = currentPath;
+    }
+
+    public void ChangeUnit() {
+        unitSelector++;
+        if(unitSelector >= selectedUnit.Length) {
+            unitSelector = 0;
+            Debug.Log("Setting unitSelector to 0");
+        }
     }
 }

@@ -8,8 +8,9 @@ public class TileClickHandler : MonoBehaviour {
     public int tileY;
     public TileMap map;
 
+    
     private void OnMouseUp () {
         Debug.Log("Click");
-        map.GeneratePathTo(tileX, tileY);
+        map.GeneratePathTo(tileX, tileY, map.unitSelector);
     }
 }
