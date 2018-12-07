@@ -15,10 +15,10 @@ public class TileMap : MonoBehaviour {
     int mapSizeY = 20;
 
     void Start () {
-        for (int x = 0; x < selectedUnit.Length; x++) {
-            selectedUnit[x].GetComponent<Unit>().tileX = (int)selectedUnit[x].transform.position.x;
-            selectedUnit[x].GetComponent<Unit>().tileY = (int)selectedUnit[x].transform.position.y;
-            selectedUnit[x].GetComponent<Unit>().map = this;
+        for (int k = 0; k < selectedUnit.Length; k++) {
+            selectedUnit[k].GetComponent<Unit>().tileX = (int)selectedUnit[k].transform.position.x;
+            selectedUnit[k].GetComponent<Unit>().tileY = (int)selectedUnit[k].transform.position.y;
+            selectedUnit[k].GetComponent<Unit>().map = this;
             Debug.Log("Hello");
         }
         GenerateMapData();
@@ -188,7 +188,7 @@ public class TileMap : MonoBehaviour {
     public bool UnitCanEnterTile(int x, int y) {
         // test unit's walk/fly/hover type against various
         // terrain flags to see if they can enter tile
-        return tileTypes[tiles[x, y]].isWalkable && TileNotOccupied(x, y);
+        return tileTypes[tiles[x, y]].isWalkable;// && TileNotOccupied(x, y);
     }
 
     public bool TileNotOccupied(int x, int y) {
@@ -196,7 +196,7 @@ public class TileMap : MonoBehaviour {
             int unitX = selectedUnit[k].GetComponent<Unit>().tileX;
             int unitY = selectedUnit[k].GetComponent<Unit>().tileY;
             if (x == unitX && y == unitY) {
-                //Debug.Log("There's someone there!");
+                Debug.Log("There's someone there!");
                 return false;
             }
         }
@@ -212,7 +212,7 @@ public class TileMap : MonoBehaviour {
         // clear out our unit's old path
         selectedUnit[n].GetComponent<Unit>().currentPath = null;
 
-        if (UnitCanEnterTile(x, y) == false) {
+        if (UnitCanEnterTile(x, y) == false || TileNotOccupied(x, y) == false) {
             // quit out since we clicked on a mountian or water..
             Debug.Log("You are an idiot! That unit can't enter that tile!");
             return;
@@ -296,5 +296,9 @@ public class TileMap : MonoBehaviour {
             unitSelector = 0;
             Debug.Log("Setting unitSelector to 0");
         }
+    }
+
+    public void EndTurn() {
+
     }
 }
