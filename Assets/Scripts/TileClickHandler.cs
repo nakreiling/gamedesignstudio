@@ -12,6 +12,6 @@ public class TileClickHandler : MonoBehaviour
     private void OnMouseUp()
     {
         Debug.Log("Click");
-        map.GeneratePathTo(tileX, tileY);
+        map.GeneratePathTo(tileX, tileY, map.unitSelector);
     }
 }

@@ -77,10 +77,10 @@
     <Compile Include="Assets\Scripts\Preserve_Unit.cs" />
     <Compile Include="Assets\Scripts\Stats.cs" />
     <Compile Include="Assets\Scripts\TileClickHandler.cs" />
+    <Compile Include="Assets\Scripts\TileMap.cs" />
     <Compile Include="Assets\Scripts\TileType.cs" />
     <Compile Include="Assets\Scripts\Unit.cs" />
     <Compile Include="Assets\Scripts\WorldDecomposer.cs" />
-    <Compile Include="Assets\TileMap.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/ITCS4232_Project/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
