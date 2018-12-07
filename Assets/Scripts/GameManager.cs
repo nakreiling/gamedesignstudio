@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour {
 
     GameObject rockPlayer,rockEnemy, attack, defend, strike, charge, giveUp, AtkMag, DefMag, counter;
     enum moves {ATTACK=1, STRIKE=2, ATKMAG=3, CHARGE=4, DEFEND=5, COUNTER=6, DEFMAG=7, GIVEUP=8 }
+    GameObject[] player_units  = GameObject.FindGameObjectsWithTag("Player");
+    GameObject[] enemy_units = GameObject.FindGameObjectsWithTag("Enemy"); //going to use this to help use peserve units between scenes
     void Start () {
 
         //Get list of objects that can be set active later

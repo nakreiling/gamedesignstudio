@@ -74,6 +74,7 @@
     <Compile Include="Assets\Scripts\PlayerControllerRigidBody.cs" />
     <Compile Include="Assets\Scripts\PlayerControllerTransform.cs" />
     <Compile Include="Assets\Scripts\PlayerWeapon.cs" />
+    <Compile Include="Assets\Scripts\Preserve_Unit.cs" />
     <Compile Include="Assets\Scripts\Stats.cs" />
     <Compile Include="Assets\Scripts\TileClickHandler.cs" />
     <Compile Include="Assets\Scripts\TileType.cs" />
