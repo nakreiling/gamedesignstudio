@@ -97,8 +97,9 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
         //cheats
         if (Input.GetKeyDown(KeyCode.T))
         {
-            Activate.activateflag = true;
-            Debug.Log("IS TROO");
+           // GameManager.turnOffMagic();
+           // Activate.activateflag = true;
+            Debug.Log("IS gone");
         }
         else if (Input.GetKeyDown(KeyCode.F))
         {
@@ -206,23 +207,27 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                 //Debug.Log("PRESSED");
                 action = GameObject.FindWithTag("Enemy").GetComponent<EnemyActions>();
 
-                move = Random.Range(1, 3); //chooses a number between 1 and 4 //neeed 5
+                move = Random.Range(1, 5); //chooses a number between 1 and 4 //neeed 5
                 //Set the appropiate methods
                 if (move == 1)
                 {
                     enemyMove = "defend";
+                    Debug.Log("it is set");
+                    GameManager.enemyPrompt = 9;
                     action.defenseMethod(); //call the attack action from the skeleton script 
                     
                 }
                 else if (move == 2)
                 {
                     enemyMove = "counter";
+                    GameManager.enemyPrompt = 10;
                     action.counterMethod();
                     
                 }
                 else if (move == 3)
                 {
                     enemyMove = "giveUp";
+                    GameManager.enemyPrompt = 11;
                     action.giveUpMethod();
                     
 
@@ -230,6 +235,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                 else if (move == 4)
                 {
                     enemyMove = "defMagic";
+                    GameManager.enemyPrompt = 12;
                     action.defMagMethod();
                     
                 }
@@ -313,7 +319,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
 
                 action = GameObject.FindWithTag("Enemy").GetComponent<EnemyActions>();
 
-                move = 2;// Random.Range(1, 5); //chooses a number between 1 and 4 
+                move =  Random.Range(1, 5); //chooses a number between 1 and 4 
                 counterFlag = false;
 
                 buttonList[selectedButton].action();
@@ -322,11 +328,13 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                 //Set the appropiate methods
                 if (move == 1)
                 {
+                    GameManager.enemyPrompt = 13;
                     action.attackMethod(); //call the attack action from the skeleton script 
                     enemyMove = "attack";
                 }
                 else if (move == 2)
                 {
+                    GameManager.enemyPrompt = 14;
                     enemyMove = "strike";
                     strikeFlag = true;
                     action.strikeMethod();
@@ -334,11 +342,13 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                 }
                 else if (move == 3)
                 {
+                    GameManager.enemyPrompt = 15;
                     action.chargeMethod();
                     enemyMove = "charge";
                 }
                 else if (move == 4)
                 {
+                    GameManager.enemyPrompt = 16;
                     action.atkMagMethod();
                     enemyMove = "atkMagic";
                 }

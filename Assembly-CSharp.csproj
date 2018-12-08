@@ -62,6 +62,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\GridMove.cs" />
+    <Compile Include="Assets\KY_effects\Script\ConGUI.cs" />
+    <Compile Include="Assets\KY_effects\Script\Lighting.cs" />
     <Compile Include="Assets\Scripts\Activate.cs" />
     <Compile Include="Assets\Scripts\ActivateDefense.cs" />
     <Compile Include="Assets\Scripts\AnimScript.cs" />
@@ -88,6 +90,9 @@
     <Compile Include="Assets\TimelineEvents\Scripts\TimelineEvents\TimelineEventClip.cs" />
     <Compile Include="Assets\TimelineEvents\Scripts\TimelineEvents\TimelineEventMixerBehaviour.cs" />
     <Compile Include="Assets\TimelineEvents\Scripts\TimelineEvents\TimelineEventTrack.cs" />
+    <Compile Include="Assets\UETools\Magic_Particle_Effects\Scripts\CameraMovement.cs" />
+    <None Include="Assets\KY_effects\MagicEffectsPackFree\ReadMe.txt" />
+    <None Include="Assets\UETools\Magic_Particle_Effects\Readme.txt" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/Thomas/Documents/GitHub/gamedesignstudio/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

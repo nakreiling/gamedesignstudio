@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
-    public static bool playerTurn, timelineActive;
-    public static int rand, count;
+    public static bool playerTurn, timelineActive, promptOver;
+    public static int rand, count, playerPrompt, enemyPrompt;
+    //PlayerPrompt...1-defend 2-counter 3-giveUp 4-defMagic 5-attack 6-strike 7 -charge 8-atkMag
+    //Enemy Prompt...9-defend 10-counter giveUp-11, defMagic-12 attack-13 strike-14 charge-15 atkMag-16
     // Use this for initialization
     Vector3 attckPos;
     Vector3 defendPos;
@@ -16,7 +18,8 @@ public class GameManager : MonoBehaviour {
     Vector3 giveUpPos;
 
     Vector3 tempAtk, tempDefend, tempCounter, tempStrike, tempAtkMag, tempDefMag, tempCharge, tempGiveUp;
-    GameObject rockPlayer,rockEnemy, attack, defend, strike, charge, giveUp, AtkMag, DefMag, counter;
+    GameObject rockPlayer,rockEnemy, attack, defend, strike, charge, giveUp, AtkMag, DefMag, counter, atkPromptPlayer, atkMagPromptPlayer, chargePromptPlayer, strikePromptPlayer, defPromptPlayer, counterPromptPlayer, giveUpPromptPlayer, defMagPromptPlayer, atkPromptEnemy, strikePromptEnemy, chargePromptEnemy, atkMagPromptEnemy, defPromptEnemy, giveUpPromptEnemy, counterPromptEnemy, defMagPromptEnemy;
+    //Above is all object I turn off at start included sprites I need.
     //Collection of all objects
     GameObject[] gos;
 
@@ -28,6 +31,56 @@ public class GameManager : MonoBehaviour {
         //Get list of objects that can be set active later
 
         gos = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[]; //will return an array of all GameObjects in the scene
+
+        atkPromptPlayer = GameObject.Find("atkPromptPlayer");
+        atkPromptPlayer.SetActive(false);//test here
+
+        atkMagPromptPlayer = GameObject.Find("atkMagPromptPlayer");
+        atkMagPromptPlayer.SetActive(false);
+
+        strikePromptPlayer= GameObject.Find("strikePromptPlayer");
+        strikePromptPlayer.SetActive(false);
+
+        chargePromptPlayer = GameObject.Find("chargePromptPlayer");
+        chargePromptPlayer.SetActive(false);
+        //Defense Player
+        defPromptPlayer = GameObject.Find("defPromptPlayer");
+        defPromptPlayer.SetActive(false);//test here
+
+        counterPromptPlayer = GameObject.Find("counterPromptPlayer");
+        counterPromptPlayer.SetActive(false);//test here
+
+        giveUpPromptPlayer = GameObject.Find("giveUpPromptPlayer");
+        giveUpPromptPlayer.SetActive(false);
+
+        defMagPromptPlayer = GameObject.Find("defMagPromptPlayer");
+        defMagPromptPlayer.SetActive(false);
+        
+        //enemy sprite turn off Enemy
+        atkPromptEnemy = GameObject.Find("atkPromptEnemy");
+        atkPromptEnemy.SetActive(false);//test here
+
+        atkMagPromptEnemy = GameObject.Find("atkMagPromptEnemy");
+        atkMagPromptEnemy.SetActive(false);
+
+        strikePromptEnemy = GameObject.Find("strikePromptEnemy");
+        strikePromptEnemy.SetActive(false);
+
+        chargePromptEnemy = GameObject.Find("chargePromptEnemy");
+        chargePromptEnemy.SetActive(false);
+        //Defense sprite enemy
+        defPromptEnemy = GameObject.Find("defPromptEnemy");
+        defPromptEnemy.SetActive(false);//test here
+
+        counterPromptEnemy = GameObject.Find("counterPromptEnemy");
+        counterPromptEnemy.SetActive(false);//test here
+
+        giveUpPromptEnemy = GameObject.Find("giveUpPromptEnemy");
+        giveUpPromptEnemy.SetActive(false);
+
+        defMagPromptEnemy = GameObject.Find("defMagPromptEnemy");
+        defMagPromptEnemy.SetActive(false);
+
 
         rockPlayer = GameObject.Find("RockPlayer");
         rockEnemy = GameObject.Find("RockEnemy");
@@ -83,7 +136,15 @@ public class GameManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-       //  Debug.Log("Rand is: " + rand);
+       // Debug.Log(promptOver);
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            turnOffMagic();
+            // Activate.activateflag = true;
+            Debug.Log("IS gone");
+        }
+
+        //  Debug.Log("Rand is: " + rand);
         //Debug.Log(playerTurn + "equals Player Turn ");
         //Debug.Log("rand is: "+ rand);
         if (rand == 1)//players turn
@@ -138,7 +199,7 @@ public class GameManager : MonoBehaviour {
             }
 
 
-            Debug.Log("it is true");
+           // Debug.Log("it is true");
             attckPos = new Vector3(0, 220, 0);
             defendPos = new Vector3(0, 220, 0);
             counterPos = new Vector3(0, 220, 0);
@@ -153,9 +214,9 @@ public class GameManager : MonoBehaviour {
         {
 
 
-            Debug.Log("it is now false");
+          //  Debug.Log("it is now false");
 
-
+            /*
             attack.transform.position = tempAtk;
             defend.transform.position = tempDefend;
             counter.transform.position = tempCounter;
@@ -165,6 +226,7 @@ public class GameManager : MonoBehaviour {
             charge.transform.position = tempCharge;
             giveUp.transform.position = tempGiveUp;
            // Debug.Log("Come BACK");
+           */
 
         }
 
@@ -177,5 +239,102 @@ public class GameManager : MonoBehaviour {
        return count++;
     }
 
+    public void turnOffMagic()
+    {
+        foreach (GameObject go in gos)
+        {
+            if (go.layer == (12) && go.CompareTag("Magic"))
+            {
+                go.SetActive(false); //turns off  magic
+            }
+        }
+        timelineActive = false; //brings back the UI
+    }
     
+    public void setPlayerSprites()
+    {
+       // Debug.Log(playerPrompt+ "player");
+        switch (playerPrompt)
+        {
+            case 1:
+                defPromptPlayer.SetActive(true);
+                break;//repeat
+            case 2:
+                counterPromptPlayer.SetActive(true);
+                break;//repeat
+            case 3:
+                giveUpPromptPlayer.SetActive(true);
+                break;//repeat
+            case 4:
+                defMagPromptPlayer.SetActive(true);
+                break;//repeat
+            case 5:
+                atkPromptPlayer.SetActive(true);
+                break;//repeat
+            case 6:
+                strikePromptPlayer.SetActive(true);
+                break;//repeat
+            case 7:
+                chargePromptPlayer.SetActive(true);
+                break;//repeat
+            case 8:
+                atkMagPromptPlayer.SetActive(true);
+                break;//repeat
+        }
+        
+
+    }
+
+    public void setEnemySprites()
+    {
+       // Debug.Log(enemyPrompt+ "enemy");
+        switch (enemyPrompt)
+        {
+            case 9:
+                defPromptEnemy.SetActive(true);
+                break;//repeat
+            case 10:
+                counterPromptEnemy.SetActive(true);
+                break;
+            case 11:
+                giveUpPromptEnemy.SetActive(true);
+                break;
+            case 12:
+                defMagPromptEnemy.SetActive(true);
+                break;
+            case 13:
+                atkPromptEnemy.SetActive(true);
+                break;
+            case 14:
+                strikePromptEnemy.SetActive(true);
+                break;
+            case 15:
+                chargePromptEnemy.SetActive(true);
+                break;
+            case 16:
+                atkMagPromptEnemy.SetActive(true);
+                break;
+        }
+
+    }
+
+    public void resetPrompts()
+    {
+        Debug.Log("RESET");
+        foreach (GameObject go in gos)
+        {
+            if (go.layer == (5) && go.CompareTag("Prompt"))
+            {
+                go.SetActive(false); //turns off prompts
+                                    
+            }
+
+        }
+
+        timelineActive = false;
+        promptOver = true;
+        //THESE TWO LINES MIGHT BE NEEDED AT A LATER TIME
+       // playerPrompt = 0;
+       // enemyPrompt = 0;
+    }
 }

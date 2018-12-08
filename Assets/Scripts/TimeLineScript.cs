@@ -18,7 +18,7 @@ public class TimeLineScript : MonoBehaviour {
 
     public void PlayFromTimeLines(int index)
     {
-        Debug.Log("HERE");
+      
         TimelineAsset selectedAsset;
         if(timeLines.Count <= index)
         {

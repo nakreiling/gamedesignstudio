@@ -9,6 +9,8 @@ TagManager:
   - DefenseChoice
   - OffenseChoice
   - Death
+  - Magic
+  - Prompt
   layers:
   - Default
   - TransparentFX
@@ -22,7 +24,7 @@ TagManager:
   - Button
   - Player
   - Enemy
-  - 
+  - Magic
   - 
   - 
   - 
