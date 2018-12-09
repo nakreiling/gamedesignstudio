@@ -6,7 +6,10 @@ public class Unit : MonoBehaviour {
 
     public int tileX;
     public int tileY;
+    public bool isEnemy;
     public TileMap map;
+    public bool isDead;
+
 
     public List<Node> currentPath = null;
 
@@ -24,7 +27,7 @@ public class Unit : MonoBehaviour {
                 Vector3 end = map.TileCoordToWorldCoord(currentPath[currNode + 1].x, currentPath[currNode + 1].y) +
                     new Vector3(0, 0, -1f);
 
-                Debug.DrawLine(start, end, Color.red);
+                Debug.DrawLine(start, end);//, Color.red);
 
                 currNode++;
             }
