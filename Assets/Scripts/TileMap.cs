@@ -5,7 +5,8 @@ using UnityEngine;
 public class TileMap : MonoBehaviour
 {
 
-    public GameObject[] selectedUnit;
+    //public GameObject[] selectedUnit;
+    public List<GameObject> selectedUnit = new List<GameObject>();
     public TileType[] tileTypes;
 
     int[,] tiles;
@@ -17,7 +18,7 @@ public class TileMap : MonoBehaviour
 
     void Start()
     {
-        for (int k = 0; k < selectedUnit.Length; k++)
+        for (int k = 0; k < selectedUnit.Count; k++)
         {
             selectedUnit[k].GetComponent<Unit>().tileX = (int)selectedUnit[k].transform.position.x;
             selectedUnit[k].GetComponent<Unit>().tileY = (int)selectedUnit[k].transform.position.y;
@@ -215,9 +216,108 @@ public class TileMap : MonoBehaviour
         return tileTypes[tiles[x, y]].isWalkable;// && TileNotOccupied(x, y);
     }
 
+    public void Attack()
+    {
+        int victim = EnemyInFront(unitSelector);
+        if (victim != -1)
+        {
+            Debug.Log("Attacking enemy!");
+            Destroy(selectedUnit[victim]);
+            selectedUnit.RemoveAt(victim);
+        }
+        else
+        {
+            Debug.Log("Cannot attack enemy");
+        }
+    }
+
+    // returns true if the unit is standing in directly next to a unit
+    // this method does not check for diagonal units
+    public int EnemyInFront(int n)
+    {
+        int currentX = selectedUnit[n].GetComponent<Unit>().tileX;
+        int currentY = selectedUnit[n].GetComponent<Unit>().tileY;
+        bool status = selectedUnit[n].GetComponent<Unit>().isEnemy;
+        int unit;
+        if (TileNotOccupied(currentX + 1, currentY) == false)
+        {
+            unit = getUnitSelector(currentX + 1, currentY);
+            if (selectedUnit[unit].GetComponent<Unit>().isEnemy != status)
+            {
+                Debug.Log("Found an enemy!");
+                return unit;
+            }
+            else
+            {
+                Debug.Log("No friendly fire asshole...");
+            }
+        }
+        if (TileNotOccupied(currentX - 1, currentY) == false)
+        {
+            unit = getUnitSelector(currentX - 1, currentY);
+            if (selectedUnit[unit].GetComponent<Unit>().isEnemy != status)
+            {
+                Debug.Log("Found an enemy!");
+                return unit;
+            }
+            else
+            {
+                Debug.Log("No friendly fire asshole...");
+            }
+        }
+        if (TileNotOccupied(currentX, currentY + 1) == false)
+        {
+            unit = getUnitSelector(currentX, currentY + 1);
+            if (selectedUnit[unit].GetComponent<Unit>().isEnemy != status)
+            {
+                Debug.Log("Found an enemy!");
+                return unit;
+            }
+            else
+            {
+                Debug.Log("No friendly fire asshole...");
+            }
+        }
+        if (TileNotOccupied(currentX, currentY - 1) == false)
+        {
+            unit = getUnitSelector(currentX, currentY - 1);
+            if (selectedUnit[unit].GetComponent<Unit>().isEnemy != status)
+            {
+                Debug.Log("Found an enemy!");
+                return unit;
+            }
+            else
+            {
+                Debug.Log("No friendly fire asshole...");
+            }
+        }
+        Debug.Log("No enemies found.");
+        return -1;
+    }
+
+    // return index of unit at x, y
+    // return -1 if there is no unit
+    public int getUnitSelector(int x, int y)
+    {
+        for (int k = 0; k < selectedUnit.Count; k++)
+        {
+            int unitX = selectedUnit[k].GetComponent<Unit>().tileX;
+            int unitY = selectedUnit[k].GetComponent<Unit>().tileY;
+            if (x == unitX && y == unitY)
+            {
+                Debug.Log("Found unit at location.");
+                return k;
+            }
+        }
+        Debug.Log("Couldn't locate unit.");
+        return -1;
+    }
+
+    // Checks if the tile is occupied by another unit.
+    // @return - false if the tile is occupied, true if it is not
     public bool TileNotOccupied(int x, int y)
     {
-        for (int k = 0; k < selectedUnit.Length; k++)
+        for (int k = 0; k < selectedUnit.Count; k++)
         {
             int unitX = selectedUnit[k].GetComponent<Unit>().tileX;
             int unitY = selectedUnit[k].GetComponent<Unit>().tileY;
@@ -242,7 +342,7 @@ public class TileMap : MonoBehaviour
 
         if (UnitCanEnterTile(x, y) == false || TileNotOccupied(x, y) == false)
         {
-            // quit out since we clicked on a mountian or water..
+            // quit out since we clicked on a mountian or water or the tile is occupied by another unit
             Debug.Log("You are an idiot! That unit can't enter that tile!");
             return;
         }
@@ -256,6 +356,7 @@ public class TileMap : MonoBehaviour
                             selectedUnit[n].GetComponent<Unit>().tileY];
 
         Node target = graph[x, y];
+        selectedUnit[n].GetComponent<Unit>().targetNode = target;
 
         dist[source] = 0;
         prev[source] = null;
@@ -329,18 +430,67 @@ public class TileMap : MonoBehaviour
         selectedUnit[n].GetComponent<Unit>().currentPath = currentPath;
     }
 
+    // this method currently allows you to control all units
+    // TODO : needs to be altered to only allow switching between friendly units
     public void ChangeUnit()
     {
         unitSelector++;
-        if (unitSelector >= selectedUnit.Length)
+        if (unitSelector >= selectedUnit.Count)
         {
             unitSelector = 0;
             Debug.Log("Setting unitSelector to 0");
         }
     }
 
+    // end the turn and then move the enemies towards the nearest unit
     public void EndTurn()
     {
-        GeneratePathTo(0, 4, 3);
+        for (int k = 0; k < selectedUnit.Count; k++)
+        {
+            if (selectedUnit[k].GetComponent<Unit>().isEnemy == true)
+            {
+                Debug.Log("Moving towards units");
+                int chosenUnit = LocateClosestUnit(k);
+                GeneratePathTo(selectedUnit[chosenUnit].GetComponent<Unit>().tileX,
+                    selectedUnit[chosenUnit].GetComponent<Unit>().tileY + 1,
+                    k);
+                if (selectedUnit[k].GetComponent<Unit>().targetNode == selectedUnit[k - 1].GetComponent<Unit>().targetNode)
+                {
+                    GeneratePathTo(selectedUnit[chosenUnit].GetComponent<Unit>().tileX + 1,
+                        selectedUnit[chosenUnit].GetComponent<Unit>().tileY + 1,
+                        k);
+                }
+            }
+        }
+        //GeneratePathTo(0, 4, 3);
+    }
+
+    public int LocateClosestUnit(int n)
+    {
+        int unitX = selectedUnit[n].GetComponent<Unit>().tileX;
+        int unitY = selectedUnit[n].GetComponent<Unit>().tileY;
+        bool friend = selectedUnit[n].GetComponent<Unit>().isEnemy;
+        int prevDist = 100;
+        int closestUnitSelector = -1;
+
+        for (int k = 0; k < selectedUnit.Count; k++)
+        {
+            if (k != n && friend != selectedUnit[k].GetComponent<Unit>().isEnemy)
+            {
+                int kX = selectedUnit[k].GetComponent<Unit>().tileX;
+                int kY = selectedUnit[k].GetComponent<Unit>().tileY;
+                int dist = Mathf.Abs(unitX - kX) + Mathf.Abs(unitY - kY);
+                if (dist < prevDist)
+                {
+                    prevDist = dist;
+                    closestUnitSelector = k;
+                }
+            }
+        }
+        if (closestUnitSelector == -1)
+        {
+            Debug.Log("Could not find a unit to pursue.");
+        }
+        return closestUnitSelector;
     }
 }

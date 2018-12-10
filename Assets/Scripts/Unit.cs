@@ -7,7 +7,10 @@ public class Unit : MonoBehaviour
 
     public int tileX;
     public int tileY;
+    public bool isEnemy;
     public TileMap map;
+    public bool isDead;
+    public Node targetNode;
 
     public List<Node> currentPath = null;
 

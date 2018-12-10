@@ -12,6 +12,8 @@ public class UnitManager : MonoBehaviour {
     public static UnitManager Instance; //instance what does that mean here?
 
     private static float playerBattleResultHealth, enemyBattleResultHealth;
+    private static Vector3 playerMapPosition, enemyMapPosition;
+    private static Quaternion quater; 
     public float PlayerH; //this is just to test if info is being recorded from battle or not
     public float EnemyH; 
    
