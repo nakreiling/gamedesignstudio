@@ -84,9 +84,14 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
         DefMag.SetActive(false);
         giveUp.SetActive(false);
         */
+        //float battleEndHealth = GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth();
+        //UnitManager.PlayerBattleResultHealth = battleEndHealth; //I think this is giving Player 100 health, but doesn't explain skelly having 50 when he should have 75
 
-
-
+        //needs to be changed to identify unit based on position, look at TileMap for how to alter
+        GameObject.FindWithTag("Enemy").GetComponent<Stats>().setHealth(UnitManager.EnemyBattleResultHealth); //we need a setter for the Units health that can set it based on what is from the Static (DB) class
+        Debug.Log("The Battle Mode has started,known health of Enemy is: " + UnitManager.EnemyBattleResultHealth);//Derpy?
+        GameObject.FindWithTag("Player").GetComponent<Stats>().setHealth(UnitManager.PlayerBattleResultHealth); //okay so if I did this correctly we will pass Health data (and more) from the two scenes
+        Debug.Log("The Battle Mode has started,known health of pdog is: " + UnitManager.PlayerBattleResultHealth);//RRREEEEE
     }
 
 

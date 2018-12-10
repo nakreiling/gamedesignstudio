@@ -13,9 +13,9 @@ public class UnitManager : MonoBehaviour {
 
     private static float playerBattleResultHealth, enemyBattleResultHealth;
     private static Vector3 playerMapPosition, enemyMapPosition;
-    private static Quaternion quater; 
-    public float PlayerH; //this is just to test if info is being recorded from battle or not
-    public float EnemyH; 
+    private static Quaternion playerRotation, enemyRotation;  //idea is to use these two variables in conjunction to record where on the map the two combatants are before switching 
+    //public float PlayerH; //this is just to test if info is being recorded from battle or not
+    //public float EnemyH; 
    
 
     private void Awake()
@@ -29,6 +29,7 @@ public class UnitManager : MonoBehaviour {
         else if( Instance != this)
         {
             Destroy(gameObject); //is it okay to have white space here? Weird.
+            //I think this is a typo, we neeed to specifically only have the one GameObject
         }
     }
 
@@ -69,4 +70,61 @@ public class UnitManager : MonoBehaviour {
         }
     }
 
+    public static Vector3 PlayerMapPosition
+    {
+        get
+        {
+            return playerMapPosition;
+        }
+        set
+        {
+            playerMapPosition = value;
+        }
+    }
+
+    public static Vector3 EnemyMapPosition
+    {
+        get
+        {
+            return enemyMapPosition;
+        }
+        set
+        {
+            enemyMapPosition = value;
+        }
+    }
+
+    public static Quaternion PlayerRotation
+    {
+        get
+        {
+            return playerRotation;
+        }
+        set
+        {
+            playerRotation = value;
+        }
+    }
+
+    public static Quaternion EnemyRotation
+    {
+        get
+        {
+            return enemyRotation;
+        }
+        set
+        {
+            enemyRotation = value;
+        }
+    }
+    //Player Static Data recorded for testing purposes here, single target only right now
+    public float PlayerH = PlayerBattleResultHealth; //this is just to test if info is being recorded from battle or not
+    public Vector3 PlayerP = PlayerMapPosition; //This doesn't work like how I thought
+    public Quaternion PlayerR = PlayerRotation;
+    //Enemy Data single target only currently
+    public float EnemyH = EnemyBattleResultHealth;
+    public Vector3 EnemyP = EnemyMapPosition;
+    public Quaternion EnemyR = EnemyRotation;
+
 }
+

@@ -10,7 +10,10 @@ public class GameManager : MonoBehaviour {
 
     GameObject rockPlayer,rockEnemy, attack, defend, strike, charge, giveUp, AtkMag, DefMag, counter;
     enum moves {ATTACK=1, STRIKE=2, ATKMAG=3, CHARGE=4, DEFEND=5, COUNTER=6, DEFMAG=7, GIVEUP=8 }
-  
+
+    
+
+
     void Start () {
 
         GameObject[] player_units = GameObject.FindGameObjectsWithTag("Player");
@@ -77,8 +80,8 @@ public class GameManager : MonoBehaviour {
         }
 
         
-
-
+        //idea with this if check is that if its the BattleScene 
+        /*
         if(GameObject.FindGameObjectsWithTag("Player").Length < 1)
         {
             rockPlayer.SetActive(true);
@@ -87,26 +90,29 @@ public class GameManager : MonoBehaviour {
         {
             rockEnemy.SetActive(true);
         }//adding some statements to account for when a units health is 0, Concern: Units health only decreases in battle right?
-        else if(GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth() <= 0)
+        */
+
+
+        if(GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth() < 1)
         {
             GameObject.FindWithTag("Player").SetActive(false);
             rockPlayer.SetActive(true); //2nd verse same as the first, need a time buffer and then unload the scene, load overworld
             //To do: Timed Buffer
-            Debug.Log("I am the Player and its time to leave!"); //Player died
-            SceneManager.LoadScene("OverWorld"); //, LoadSceneMode.Single); //might need to switch to Asynchronous mode
+            //Debug.Log("I am the Player and its time to leave!"); //Player died
             float battleEndHealth = GameObject.FindWithTag("Enemy").GetComponent<Stats>().getHealth(); //recording the Health of the surviving, need to put it into the Unit Manager...
-            UnitManager.PlayerBattleResultHealth = battleEndHealth; //uh...does it need to be named seperately????
-            Debug.Log("NPC survived with: " + battleEndHealth);
+            UnitManager.EnemyBattleResultHealth = battleEndHealth; //uh...does it need to be named seperately????
+            Debug.Log("NPC survived with: " + UnitManager.EnemyBattleResultHealth);
+            SceneManager.LoadScene("OverWorld"); //, LoadSceneMode.Single); //might need to switch to Asynchronous mode
         }
-        else if (GameObject.FindWithTag("Enemy").GetComponent<Stats>().getHealth() <= 0)
+        else if (GameObject.FindWithTag("Enemy").GetComponent<Stats>().getHealth() < 1) //was <= 0
         {  //To do: Delete the Unit from the overall Unit list
             GameObject.FindWithTag("Enemy").SetActive(false); //So... if this works....nullreference error? should have a time buffer and unload the scene
             rockEnemy.SetActive(true); //I think we have to explicitly remove the NPC as well?
-            Debug.Log("I'm out of Here! Love Skelly."); //NPC died
-            SceneManager.LoadScene("OverWorld"); //, LoadSceneMode.Single);
+            //Debug.Log("I'm out of Here! Love Skelly."); //NPC died
             float battleEndHealth = GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth();
             UnitManager.PlayerBattleResultHealth = battleEndHealth;
-            Debug.Log("Player survived with: " + battleEndHealth); //Derp a lerp
+            Debug.Log("Player survived with: " + UnitManager.PlayerBattleResultHealth); //Derp a lerp
+            SceneManager.LoadScene("OverWorld"); //, LoadSceneMode.Single);
         }
         //else if (GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth() <= 0)
         //{
@@ -119,4 +125,5 @@ public class GameManager : MonoBehaviour {
     {
        return count++;
     }
+
 }

@@ -22,6 +22,13 @@ public class Stats : MonoBehaviour {
         return currentHealth;
     }
 
+    public float setHealth(float healthFromStaticClass)
+    {
+        float temp = healthFromStaticClass;
+        currentHealth = temp;
+        healthFill.value = temp; //because the slider wasn't moving
+        return currentHealth;
+    }
     public void ChangeHealth(float amount)
     {
       

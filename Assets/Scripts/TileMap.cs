@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; //needed to switch scences
 
 public class TileMap : MonoBehaviour
 {
@@ -16,8 +17,29 @@ public class TileMap : MonoBehaviour
     int mapSizeX = 20;
     int mapSizeY = 20;
 
+    public static bool gameSessionActive = true; //Saying true for now the idea is that this only get changed ONCE per the entire game session
+    private void Awake()
+    {
+        if (gameSessionActive)
+        {
+            float healthE = GameObject.FindWithTag("Enemy").GetComponent<Stats>().getHealth();
+            UnitManager.EnemyBattleResultHealth = healthE; //initializing the initator
+            Debug.Log("Game Start Enemy Health is: " + UnitManager.EnemyBattleResultHealth);
+            float healthP = GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth();
+            UnitManager.PlayerBattleResultHealth = healthP;
+            Debug.Log("Game Start Player Health is: " + UnitManager.PlayerBattleResultHealth);  //I hate unity
+            gameSessionActive = false; //idea is that it will be false until the game is shut down and restarted
+        }
+    }
     void Start()
     {
+        //just for testing purposes to pull out the data of the test Skelly and Knights health after Battle has occured
+       
+        //float healthE = GameObject.FindWithTag("Enemy").GetComponent<Stats>().getHealth();
+        //Issue only works with singular Knight and Skelly
+        //Need a way to record which two units were actually fighting before restoring health
+       
+        
         for (int k = 0; k < selectedUnit.Count; k++)
         {
             selectedUnit[k].GetComponent<Unit>().tileX = (int)selectedUnit[k].transform.position.x;
@@ -29,6 +51,20 @@ public class TileMap : MonoBehaviour
         GeneratePathFindingGraph();
         GenerateMapVisuals();
         unitSelector = 0;
+        //issue: this is only for test purposes need to be able to set health based on last known position of any active unit
+
+        //Reposition (Player) and alter health accordingly
+        //need to put in a check here to SetActive to 'false' if health is at 0 or less i.e. if the unit should be dead remove it from play
+       // GameObject.FindGameObjectWithTag("Enemy").transform.position = UnitManager.EnemyMapPosition;
+        GameObject.FindWithTag("Enemy").GetComponent<Stats>().setHealth(UnitManager.EnemyBattleResultHealth); //we need a setter for the Units health that can set it based on what is from the Static (DB) class
+        Debug.Log("Back on the Map, known health of Enemy is: " + UnitManager.EnemyBattleResultHealth);//Derpy?
+
+
+        //Reposition units based on where they were before battle started (Player)
+        //float healthP = GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth();
+       // GameObject.FindGameObjectWithTag("Player").transform.position = UnitManager.PlayerMapPosition;
+        GameObject.FindWithTag("Player").GetComponent<Stats>().setHealth(UnitManager.PlayerBattleResultHealth); //okay so if I did this correctly we will pass Health data (and more) from the two scenes
+        Debug.Log("Back on the Map, known health of pdog is: " + UnitManager.PlayerBattleResultHealth);//RRREEEEE
     }
 
     void GenerateMapData()
@@ -221,9 +257,84 @@ public class TileMap : MonoBehaviour
         int victim = EnemyInFront(unitSelector);
         if (victim != -1)
         {
+            
             Debug.Log("Attacking enemy!");
-            Destroy(selectedUnit[victim]);
-            selectedUnit.RemoveAt(victim);
+            //Destroy(selectedUnit[victim]);
+            //selectedUnit.RemoveAt(victim);
+            //We will instead grab the information of the attacker unit and the attacked unit and pass it to the Battle Scene
+
+            //issue we need to use the tags "Player" and "Enemey" instead because of situation where loaded health will be reversed
+            //selectedUnit[victim].tag("Player");
+            //So the issue is that is is looking at the "unit" (i.e. the parent) where are Toon and Skelly are the children of the units
+
+            /*
+            if (selectedUnit[victim].CompareTag("Player")) //only need the tag of the unit basically hoping this works 
+            {
+                Debug.Log("Victim Found, Killing muh Targeto");
+            }
+            else if (selectedUnit[unitSelector].CompareTag("Player"))
+            {
+                Debug.Log("This is not the Victim, you are looking for");
+            }
+            */
+            //Now testing if statements to see if 1) They correctly identify the Enemy and player 2) Health is being loaded up correctly based on assumption of correct ID
+
+            if (selectedUnit[victim].CompareTag("Enemy"))
+            {
+                float targetHealth = selectedUnit[victim].GetComponent<Unit>().GetComponentInChildren<Stats>().getHealth(); //unit being attacked
+                UnitManager.EnemyBattleResultHealth = targetHealth;
+                Vector3 enemyLastKnowPosition = selectedUnit[victim].transform.position;
+                Quaternion enemyLookingLike = selectedUnit[victim].transform.rotation;
+                UnitManager.EnemyMapPosition = enemyLastKnowPosition;//crap how do I get the transfrom from this exactly?
+                UnitManager.EnemyRotation = enemyLookingLike; //
+                Debug.Log("Enemy Coordinates from lvl 1: "+UnitManager.EnemyMapPosition);
+            }
+            else //assumption is that it is the player
+            {
+                float attackerHealth = selectedUnit[unitSelector].GetComponent<Unit>().GetComponentInChildren<Stats>().getHealth(); //unit starting the attack
+                UnitManager.PlayerBattleResultHealth = attackerHealth;
+                Vector3 playerLastKnowPosition = selectedUnit[unitSelector].transform.position;
+                Quaternion playerLookingLike = selectedUnit[unitSelector].transform.rotation;
+                Debug.Log("You gunnin' for dat player? I feel you dawg");
+                UnitManager.PlayerMapPosition = playerLastKnowPosition;//crap how do I get the transfrom from this exactly?
+                UnitManager.PlayerRotation = playerLookingLike; //
+                Debug.Log("Lvl 1 Alt Player at:" + UnitManager.PlayerMapPosition);
+
+                //Vector3 attackerPosition = selectedUnit[unitSelector] //how to get the Transform data?
+                
+            }
+
+            if (selectedUnit[unitSelector].CompareTag("Player"))
+            {
+                float attackerHealth = selectedUnit[unitSelector].GetComponent<Unit>().GetComponentInChildren<Stats>().getHealth(); //unit starting the attack
+                                                                                                     //Vector3 attackerPosition = selectedUnit[unitSelector] //how to get the Transform data?
+                UnitManager.PlayerBattleResultHealth = attackerHealth;
+                Vector3 playerLastKnowPosition = selectedUnit[unitSelector].transform.position;
+                Quaternion playerLookingLike = selectedUnit[unitSelector].transform.rotation;
+                Debug.Log("Yougunnin' for dat player? I feel you dawg");
+                UnitManager.PlayerMapPosition = playerLastKnowPosition;//crap how do I get the transfrom from this exactly?
+                UnitManager.PlayerRotation = playerLookingLike; //
+                Debug.Log(" lvl 2 Player at: " + UnitManager.PlayerMapPosition);
+
+            }
+            else
+            {
+                float targetHealth = selectedUnit[victim].GetComponent<Unit>().GetComponentInChildren<Stats>().getHealth(); //unit being attacked
+                UnitManager.EnemyBattleResultHealth = targetHealth;
+                Vector3 enemyLastKnowPosition = selectedUnit[victim].transform.position;
+                Quaternion enemyLookingLike = selectedUnit[victim].transform.rotation;
+              
+                UnitManager.EnemyMapPosition = enemyLastKnowPosition;//crap how do I get the transfrom from this exactly?
+                UnitManager.EnemyRotation = enemyLookingLike; //
+                Debug.Log(" lvl 2 Enemy spatial Coordinates on Lock"+UnitManager.EnemyMapPosition);
+
+
+
+
+            }
+            
+            SceneManager.LoadScene("BattleScene");// if it works, it will simply switch no record of stats will be maintained
+
         }
         else
         {
