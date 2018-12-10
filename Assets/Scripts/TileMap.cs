@@ -307,6 +307,7 @@ public class TileMap : MonoBehaviour {
                             selectedUnit[n].GetComponent<Unit>().tileY];
 
         Node target = graph[x, y];
+        selectedUnit[n].GetComponent<Unit>().targetNode = target;
 
         dist[source] = 0;
         prev[source] = null;
@@ -370,6 +371,8 @@ public class TileMap : MonoBehaviour {
         selectedUnit[n].GetComponent<Unit>().currentPath = currentPath;
     }
 
+    // this method currently allows you to control all units
+    // TODO : needs to be altered to only allow switching between friendly units
     public void ChangeUnit() {
         unitSelector++;
         if(unitSelector >= selectedUnit.Count) {
@@ -378,7 +381,46 @@ public class TileMap : MonoBehaviour {
         }
     }
 
+    // end the turn and then move the enemies towards the nearest unit
     public void EndTurn() {
-        GeneratePathTo(0, 4, 3);
+        for (int k = 0; k < selectedUnit.Count; k++) {
+            if (selectedUnit[k].GetComponent<Unit>().isEnemy == true) {
+                Debug.Log("Moving towards units");
+                int chosenUnit = LocateClosestUnit(k);
+                GeneratePathTo(selectedUnit[chosenUnit].GetComponent<Unit>().tileX,
+                    selectedUnit[chosenUnit].GetComponent<Unit>().tileY+1,
+                    k);
+                if (selectedUnit[k].GetComponent<Unit>().targetNode == selectedUnit[k-1].GetComponent<Unit>().targetNode) {
+                    GeneratePathTo(selectedUnit[chosenUnit].GetComponent<Unit>().tileX + 1,
+                        selectedUnit[chosenUnit].GetComponent<Unit>().tileY + 1,
+                        k);
+                }
+            }
+        }
+        //GeneratePathTo(0, 4, 3);
+    }
+
+    public int LocateClosestUnit(int n) {
+        int unitX = selectedUnit[n].GetComponent<Unit>().tileX;
+        int unitY = selectedUnit[n].GetComponent<Unit>().tileY;
+        bool friend = selectedUnit[n].GetComponent<Unit>().isEnemy;
+        int prevDist = 100;
+        int closestUnitSelector = -1;
+
+        for (int k = 0; k < selectedUnit.Count; k++) {
+            if (k != n && friend != selectedUnit[k].GetComponent<Unit>().isEnemy) {
+                int kX = selectedUnit[k].GetComponent<Unit>().tileX;
+                int kY = selectedUnit[k].GetComponent<Unit>().tileY;
+                int dist = Mathf.Abs(unitX - kX) + Mathf.Abs(unitY - kY);
+                if (dist < prevDist) {
+                    prevDist = dist;
+                    closestUnitSelector = k;
+                }
+            }
+        }
+        if (closestUnitSelector == -1) {
+            Debug.Log("Could not find a unit to pursue.");
+        }
+        return closestUnitSelector;
     }
 }

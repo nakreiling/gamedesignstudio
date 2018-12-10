@@ -9,6 +9,7 @@ public class Unit : MonoBehaviour {
     public bool isEnemy;
     public TileMap map;
     public bool isDead;
+    public Node targetNode;
 
 
     public List<Node> currentPath = null;
@@ -59,6 +60,7 @@ public class Unit : MonoBehaviour {
                 // destination -- and we are standing on it!
                 // So let's just clear our pathfinding info.
                 currentPath = null;
+                targetNode = null;
             }
         }
     }

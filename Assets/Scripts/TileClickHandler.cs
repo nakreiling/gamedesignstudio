@@ -8,7 +8,7 @@ public class TileClickHandler : MonoBehaviour {
     public int tileY;
     public TileMap map;
 
-    
+    // displays path to tile that was clicked on
     private void OnMouseUp () {
         Debug.Log("Click");
         map.GeneratePathTo(tileX, tileY, map.unitSelector);
