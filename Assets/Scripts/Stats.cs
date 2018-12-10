@@ -28,23 +28,38 @@ public class Stats : MonoBehaviour {
         Attributes  defense = GameObject.FindWithTag("Player").GetComponent<Attributes>();
         PlayerActions var = GameObject.FindWithTag("Player").GetComponent<PlayerActions>();
 
+        Attributes defenseEnemy = GameObject.FindWithTag("Enemy").GetComponent<Attributes>();
+        EnemyActions varEnemy = GameObject.FindWithTag("Enemy").GetComponent<EnemyActions>();
+
         Vector3 fwd = transform.TransformDirection(Vector3.forward);
         
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         healthFill.value = currentHealth; //Displays health remaining
-        //Buff handling
-      
-        if (var.physicalDefBuff ==true)
+                                          //Buff handling
+
+        if (var.physicalDefBuff == true)
         {
             defense.changeDefense(2f);
             var.physicalDefBuff = false;
-            
-          
+
+
+        }
+        else if(EnemyActions.enemyPhysicalDefBuff == true)
+        {
+            Debug.Log("IS IT HEREEE");
+            defenseEnemy.changeDefense(2f);
+            EnemyActions.enemyPhysicalDefBuff = false;
+        }
+        else
+        {
+            Debug.Log("No result");
         }
      
 
     }
+    
+
     private void PositionHealthBar()
     {
         Vector3 currentPos = transform.position;

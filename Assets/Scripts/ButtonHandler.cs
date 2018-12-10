@@ -9,7 +9,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
     public static bool isPlayerTurn;
     public static bool attackFlag, defendFlag, counterFlag, strikeFlag;
     //public static bool isPlayerTurn;
-    bool buttonsMade;
+    public static bool buttonsMade;
     ///<summary>Placeholder delegate function for our buttonList</summary>
     public delegate void ButtonAction();
     ///<summary>Array of buttons, created from a struct, below.</summary>
@@ -82,7 +82,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
         DefMag.SetActive(false);
         giveUp.SetActive(false);
         */
-
+      
 
 
     }
@@ -97,14 +97,18 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
         //cheats
         if (Input.GetKeyDown(KeyCode.T))
         {
+            
+                GameManager.timelineActive = true;
+           
+           
            // GameManager.turnOffMagic();
            // Activate.activateflag = true;
-            Debug.Log("IS gone");
+           
         }
         else if (Input.GetKeyDown(KeyCode.F))
         {
-            Activate.activateflag = false;
-            Debug.Log("IZZ FALSZ");
+
+            GameManager.timelineActive = false;
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -122,9 +126,12 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
         if (isPlayerTurn)
         {
 
+
+           // Debug.Log("activate!");
             strikeFlag = false;//reset bool
             if (buttonsMade == false)
             {
+                Debug.Log("create now!");
                 attack.SetActive(true);
                 defend.SetActive(false);
                 strike.SetActive(true);
@@ -206,13 +213,22 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                 //}
                 //Debug.Log("PRESSED");
                 action = GameObject.FindWithTag("Enemy").GetComponent<EnemyActions>();
-
-                move = Random.Range(1, 5); //chooses a number between 1 and 4 //neeed 5
+                if(GameManager.count == 0)
+                 {
+                     move = 1;
+                }
+                 else
+                 {
+                     move = 2;
+                 }
+                 
+               // move = 1;//Random.Range(1, 5); //chooses a number between 1 and 4 //neeed 5
                 //Set the appropiate methods
                 if (move == 1)
                 {
                     enemyMove = "defend";
                     Debug.Log("it is set");
+                    EnemyActions.enemyPhysicalDefBuff = true; //put this up there ?
                     GameManager.enemyPrompt = 9;
                     action.defenseMethod(); //call the attack action from the skeleton script 
                     
@@ -248,12 +264,13 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                                         // Debug.Log(GameManager.count + " has increased");
                 buttonsMade = false;
 
-
+               
 
             }
         }
         else //enemy turn
         {
+            
             //counterFlag = false; //reset upon turn switch so no repeat guarentee
             //GameManager.rand = 2; THIS WAS THE PROBLEM
             if(GameManager.timelineActive == false)
@@ -318,8 +335,15 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
 
 
                 action = GameObject.FindWithTag("Enemy").GetComponent<EnemyActions>();
-
-                move =  Random.Range(1, 5); //chooses a number between 1 and 4 
+               // if (GameManager.count == 0)
+               // {
+                //    move = 1;
+               // }
+               // else
+                //{
+                   // move = 4;
+               // }
+                move = 1;//Random.Range(1, 5); //chooses a number between 1 and 4 
                 counterFlag = false;
 
                 buttonList[selectedButton].action();

@@ -11,9 +11,18 @@ public class EnemyActions : MonoBehaviour
     [SerializeField] private TimeLineScript promptSet;
     [SerializeField] private TimeLineScript attackE;
     [SerializeField] private TimeLineScript defendE;
+    [SerializeField] private TimeLineScript atkMagE;
+    [SerializeField] private TimeLineScript chargeE;
+    [SerializeField] private TimeLineScript magicFailE;
+    [SerializeField] private TimeLineScript DefE;
+    [SerializeField] private TimeLineScript HealE;
+    [SerializeField] private TimeLineScript DieE;
+    [SerializeField] private TimeLineScript atkNoTrigger;
+    [SerializeField] private TimeLineScript atkNoTriggerE;
 
     int turnCheck;
-    public bool enemyPhysicalAtkBuff, enemyPhysicalDefBuff;
+    public bool enemyPhysicalAtkBuff=false;
+    public static bool enemyPhysicalDefBuff=false;
 
     // public static ArrayList enemyCollection = new ArrayList();
     public delegate void AttackDelegate();
@@ -70,6 +79,7 @@ public class EnemyActions : MonoBehaviour
 
         }
     }
+
 
     public void SkeletonAttackButtonAction()
     {
@@ -141,10 +151,15 @@ public class EnemyActions : MonoBehaviour
             {
 
                 stats.ChangeHealth(attackAmount);
-
+                
                 currentHealth = stats.currentHealth;
                 // Debug.Log("Target has " + currentHealth + " health total");
                 //Do a check to see if equal to zero and then make object a dead object hehehe
+                if (enemyPhysicalAtkBuff == true)
+                {
+                    SkeletonRevertAttack(); //decrease the power buff
+                    enemyPhysicalAtkBuff = false;
+                }
 
             }
 
@@ -157,7 +172,7 @@ public class EnemyActions : MonoBehaviour
         //   ButtonHandler.selection = 0;
 
         // }
-        GameManager.timelineActive = false;//put in every TRUE method
+        //GameManager.timelineActive = false;//put in every TRUE method
     }
 
     public void SkeletonStrikeButtonAction()
@@ -173,16 +188,16 @@ public class EnemyActions : MonoBehaviour
         public void TrueSkeletonStrikeButtonAction()//called by event in Timeline
     {
         bool dmgDone = false;
-
-        enemyStats = GameObject.FindWithTag("Enemy").GetComponent<Stats>();
+        if (GameObject.FindWithTag("Player"))
+        {
+            enemyStats = GameObject.FindWithTag("Enemy").GetComponent<Stats>();
         playerStats = GameObject.FindWithTag("Player").GetComponent<Stats>();
 
         Debug.Log("Skeleton STRIKE");
-        if (GameObject.FindWithTag("Player"))
-        {
+      
             if (PlayerActions.isCountering == true)  //if the enemy chooses to counter when the player strikes
             {
-
+                atkNoTrigger.PlayFromTimeLines(15);
                 enemyStats.ChangeHealth(-99);
                 dmgDone = true;
                 Debug.Log("GET FUCKED");
@@ -195,20 +210,22 @@ public class EnemyActions : MonoBehaviour
                 {
                     if (enemyPhysicalAtkBuff == true && dmgDone == false)
                     {
+                        atkNoTriggerE.PlayFromTimeLines(16);
                         playerStats.ChangeHealth(-160);
                         Debug.Log("Double Strike");
                         SkeletonRevertAttack();
                         enemyPhysicalAtkBuff = false;
-                        GameManager.timelineActive = false;//put in every TRUE method
+                       // GameManager.timelineActive = false;//put in every TRUE method
 
                     }
                     else
                     {
                         if (dmgDone == false)
                         {
+                            atkNoTriggerE.PlayFromTimeLines(16);
                             playerStats.ChangeHealth(-40);
                             Debug.Log("Regular Strike");
-                            GameManager.timelineActive = false;//put in every TRUE method just being safe
+                           // GameManager.timelineActive = false;//put in every TRUE method just being safe
                         }
 
                     }
@@ -219,7 +236,7 @@ public class EnemyActions : MonoBehaviour
             PlayerActions.isCountering = false;
 
         }
-        GameManager.timelineActive = false;//put in every TRUE method
+      //  GameManager.timelineActive = false;//put in every TRUE method
 
         //ButtonHandler.strikeFlag = true;
     }
@@ -236,6 +253,7 @@ public class EnemyActions : MonoBehaviour
     }
     public void SkeletonRevertDefense()
     {
+        
         Attributes defense;
         defense = GameObject.FindWithTag("Enemy").GetComponent<Attributes>();
 
@@ -261,13 +279,23 @@ public class EnemyActions : MonoBehaviour
         Debug.Log("Skeleton Charge");
         Attributes attack;
         attack = GameObject.FindWithTag("Enemy").GetComponent<Attributes>();
-        Debug.Log("before charge:" + attack);
+        if(enemyPhysicalAtkBuff == false)
+        {
+            Debug.Log("before charge:" + attack);
+            chargeE.PlayFromTimeLines(7);
+            attack.changeAttack(2);
+            Debug.Log("after charge:" + attack);
+            enemyPhysicalAtkBuff = true;
+        }
+        else
+        {
 
-        attack.changeAttack(2);
-        Debug.Log("after charge:" + attack);
 
-        enemyPhysicalAtkBuff = true;
-        GameManager.timelineActive = false;//put in every TRUE method
+        }
+     
+
+        
+      //  GameManager.timelineActive = false;//put in every TRUE method
     }
 
     public void SkeletonAtkMagicButtonAction()
@@ -306,15 +334,19 @@ public class EnemyActions : MonoBehaviour
             if (temp <= 6) //60% chance to work
             {
                 defenseAmount = defense.changeDefense(1.5f); ; //reduce the target defense by half (I know)
+                atkMagE.PlayFromTimeLines(5);//Play successful cast
+                                             //  GameManager.timelineActive = false;//put in every TRUE method
             }
             else
             {
                 Debug.Log("Failed cast");
+                magicFailE.PlayFromTimeLines(9);
+               // GameManager.timelineActive = false;//put in every TRUE method
             }
 
 
         }
-        GameManager.timelineActive = false;//put in every TRUE method
+       // GameManager.timelineActive = false;//put in every TRUE method
     }
 
     //Defense actions
@@ -336,20 +368,23 @@ public class EnemyActions : MonoBehaviour
         float defenseAmount = 0;
         Attributes defense;
 
-        if (GameObject.FindWithTag("Enemy"))
-        {
+        //if (GameObject.FindWithTag("Enemy"))
+        //{
             defense = GameObject.FindWithTag("Enemy").GetComponent<Attributes>();
 
             defenseAmount = defense.getDefense();
             if (enemyPhysicalDefBuff == false)
             {
+                Debug.Log("Defense buff enemy");
+                DefE.PlayFromTimeLines(10);
                 defenseAmount = defense.changeDefense(.5f); ; //increase the target defense by half (I know)
-            }
+                enemyPhysicalDefBuff = true;
+           // }
 
 
-            enemyPhysicalDefBuff = true;
+            
         }
-        GameManager.timelineActive = false;//put in every TRUE method
+        //GameManager.timelineActive = false;//put in every TRUE method
     }
 
     public void SkeletonCounterButtonAction()
@@ -385,7 +420,7 @@ public class EnemyActions : MonoBehaviour
             Debug.Log("Counter fail");
         }
         */
-        GameManager.timelineActive = false;//put in every TRUE method
+        //GameManager.timelineActive = false;//put in every TRUE method
     }
     public void SkeletonGiveUpButtonAction()
     {
@@ -399,8 +434,9 @@ public class EnemyActions : MonoBehaviour
     public void TrueSkeletonGiveUpButtonAction()
     {
         Debug.Log("Surrender forreal-enemy");
+        DieE.PlayFromTimeLines(14);//Lets see should change the var in other method...resetPrompt GM
         gameObject.SetActive(false);
-        GameManager.timelineActive = false;//put in every TRUE method
+      //  GameManager.timelineActive = false;//put in every TRUE method
     }
     public void SkeletonDefMagicButtonAction()
     {
@@ -425,15 +461,17 @@ public class EnemyActions : MonoBehaviour
             if (enemyStats = GameObject.FindWithTag("Enemy").GetComponent<Stats>())
             {
                 Debug.Log(" Magic heal enemy");
-                enemyStats.ChangeHealth(100);
+                HealE.PlayFromTimeLines(12);
+                enemyStats.ChangeHealth(40);
 
             }
         }
         else
         {
             Debug.Log("Failed cast");
+            magicFailE.PlayFromTimeLines(9);
         }
-        GameManager.timelineActive = false;//put in every TRUE method
+       // GameManager.timelineActive = false;//put in every TRUE method
     }
     IEnumerator Buffer()
     {
@@ -465,37 +503,83 @@ public class EnemyActions : MonoBehaviour
         {
             //Just call true actions here?
             case 9:
+                if (GameObject.FindWithTag("Player"))
+                {
                 Debug.Log("To do: " + "defend");
-                TrueSkeletonDefendButtonAction();
+                    enemyPhysicalDefBuff = true;
+                    TrueSkeletonDefendButtonAction();
+               
+                }
+                   
+               // GameManager.timelineActive = false;
                 break;//repeat
             case 10:
                 Debug.Log("Doing: " + "counter");
                 TrueSkeletonCounterButtonAction();
+               // GameManager.timelineActive = false;
                 break;//repeat
             case 11:
                 Debug.Log("Doing: " + "giveUp");
                 TrueSkeletonGiveUpButtonAction();
+              //  GameManager.timelineActive = false;
                 break;//repeat
             case 12:
-                Debug.Log("Doing: " + "defMagic");
-                TrueSkeletonDefMagicButtonAction();
+                if (GameObject.FindWithTag("Player"))
+                {
+
+                    Debug.Log("Doing: " + "defMagic");
+                    TrueSkeletonDefMagicButtonAction();
+                }
+                    
+               // GameManager.timelineActive = false;
                 break;//repeat
             case 13: //attack number
-                Debug.Log("Doing: " + "attack");
-                TrueSkeletonAttackButtonAction();//then inside you call the TimeLine associated with action
-                //defendE.PlayFromTimeLines(0); //play the anim of knight atk
+                if (GameObject.FindWithTag("Player"))
+                {
+                    Debug.Log("Doing: " + "defMagic");
+                    TrueSkeletonDefMagicButtonAction();
+                    Debug.Log("Doing: " + "attack");
+                    TrueSkeletonAttackButtonAction();//then inside you call the TimeLine associated with action
+                                                     //defendE.PlayFromTimeLines(0); //play the anim of knight atk
+                    GameManager.timelineActive = false;
+                    ButtonHandler.buttonsMade = false;
+                }
                 break;//repeat
             case 14:
-                Debug.Log("Doing: " + "strike");
-                TrueSkeletonStrikeButtonAction();
+                if (GameObject.FindWithTag("Player"))
+                {
+                    Debug.Log("Doing: " + "strike");
+                    TrueSkeletonStrikeButtonAction();
+                    GameManager.timelineActive = false;
+
+                    ButtonHandler.buttonsMade = false;
+                }
+                
                 break;//repeat
             case 15:
-                Debug.Log("Doing: " + "charge");
-                TrueSkeletonChargeButtonAction();
+                if (GameObject.FindWithTag("Player"))
+                {
+                    Debug.Log("Doing: " + "charge");
+                    TrueSkeletonChargeButtonAction();
+                    GameManager.timelineActive = false;
+                    ButtonHandler.buttonsMade = false;
+                }
+
+                    
+
                 break;//repeat
             case 16:
-                Debug.Log("Doing: " + "atkMag");
-                TrueSkeletonAtkMagicButtonAction();
+                if (GameObject.FindWithTag("Player"))
+                {
+                    Debug.Log("Doing: " + "atkMag");
+                    TrueSkeletonAtkMagicButtonAction();
+                    GameManager.timelineActive = false;
+                    ButtonHandler.isPlayerTurn = true;
+                    ButtonHandler.buttonsMade = false;
+                }
+
+                   
+
                 break;//repeat
                 
         }

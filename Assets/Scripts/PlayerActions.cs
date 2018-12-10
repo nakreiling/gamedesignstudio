@@ -4,17 +4,27 @@ using UnityEngine;
 
 public class PlayerActions : MonoBehaviour
 {
-   
+
 
     Stats enemyStats;
     Stats playerStats;
+    EnemyActions enemyActions;
     public static bool isCountering;
     int turnCheck;
-   public bool physicalAtkBuff, physicalDefBuff;
+    public bool physicalAtkBuff, physicalDefBuff;
     //Clips to use for this object
     [SerializeField] private TimeLineScript promptSet;
     [SerializeField] private TimeLineScript attackP;
-    [SerializeField] private TimeLineScript magicFailP;    
+    [SerializeField] private TimeLineScript magicFailP;
+    [SerializeField] private TimeLineScript atkMagP;
+    [SerializeField] private TimeLineScript chargeP;
+    [SerializeField] private TimeLineScript defP;
+    [SerializeField] private TimeLineScript Heal;
+    [SerializeField] private TimeLineScript DieP;
+    [SerializeField] private TimeLineScript atkNoTrigger;
+    [SerializeField] private TimeLineScript atkNoTriggerE;
+
+
 
 
     // public static ArrayList enemyCollection = new ArrayList();
@@ -113,7 +123,7 @@ public class PlayerActions : MonoBehaviour
         // Debug.Log("Attack");
         if (GameObject.FindWithTag("Enemy"))
         {
-
+            
             // TimeLineScript clip = GetComponent<TimeLineScript>();
             //clip.PlayFromTimeLines(0); //Error is on this line
 
@@ -131,9 +141,11 @@ public class PlayerActions : MonoBehaviour
                 ButtonHandler.attackFlag = true;//Now the AnimScript should trigger the animation for the attack
 
                 attackAmount = attack.getAttack();
+
+                
                 // Debug.Log("The attack would normally do " + attackAmount + " damage!");
                 //Check defense of enemy
-
+                StartCoroutine(Buffer());
                 defense = GameObject.FindWithTag("Enemy").GetComponent<Attributes>();
 
                 defenseAmount = defense.getDefense();
@@ -142,8 +154,30 @@ public class PlayerActions : MonoBehaviour
                 attackAmount = (attackAmount * defenseAmount);
 
                 //finalize amount
-                attackAmount = -attackAmount;
+
+                //if (enemyActions.enemyPhysicalAtkBuff == true)
+                
+                   // attackAmount = attackAmount / 2;
+                
+                   
+                if(EnemyActions.enemyPhysicalDefBuff == true && ButtonHandler.enemyMove != "defend")
+                {
+                    Debug.Log("Just say so");
+                  int i=  GameManager.count + 1;
+                    attackAmount = attackAmount / (2 * i);
+                    attackAmount = -attackAmount;
+
+                }
+                else
+                {
+                    attackAmount = -attackAmount;
+                    Debug.Log("It aint so");
+                }
+
+               // Debug.Log(attackAmount);
+
                 //Debug.Log("It did " + attackAmount + "Damage");
+               
 
 
                 health = GameObject.FindWithTag("Enemy").GetComponent<Stats>();
@@ -152,19 +186,20 @@ public class PlayerActions : MonoBehaviour
 
                 //set the anim back to idle, first need to turn attackFlag to false
 
-                StartCoroutine(Buffer());
-                StartCoroutine(Example());
+           
+               // StartCoroutine(Example());
 
                 // Debug.Log(attackFlag);
+               
 
-
-
-                GameManager.timelineActive = false;//should now bring back the UI
+                GameManager.timelineActive = false;
+                // ButtonHandler.buttonsMade = false;
+                // GameManager.timelineActive = false;//should now bring back the UI
 
 
             }
 
-
+           
             // Debug.Log(GameObject.FindWithTag("Enemy"));
             Stats stats;
             if (stats = GameObject.FindWithTag("Enemy").GetComponent<Stats>())
@@ -185,7 +220,7 @@ public class PlayerActions : MonoBehaviour
             }
 
         }
-        GameManager.timelineActive = false;//put in every TRUE method
+       // GameManager.timelineActive = false;//put in every TRUE method
     }
     public void ToonStrikeButtonAction()
     {
@@ -204,38 +239,51 @@ public class PlayerActions : MonoBehaviour
             if (ButtonHandler.enemyMove == "counter")  //if the enemy chooses to counter when the player strikes
             {
                 playerStats = GameObject.FindWithTag("Player").GetComponent<Stats>();
-            
-                playerStats.ChangeHealth(-99);
+            //enemy atk here add serializefield above
+            Debug.Log("This is a test");
+            atkNoTriggerE.PlayFromTimeLines(16);
+            playerStats.ChangeHealth(-99);
                 dmgDone = true;
             Debug.Log(dmgDone);
             Debug.Log("GET FUCKED");
-            GameManager.timelineActive = false;//put in every TRUE method
+          //  GameManager.timelineActive = false;//put in every TRUE method
         }
-            else if(ButtonHandler.enemyMove != "counter")
-             { 
-                 if (enemyStats = GameObject.FindWithTag("Enemy").GetComponent<Stats>())
-                  {
-                    if (physicalAtkBuff == true && dmgDone ==false)
+            else if(ButtonHandler.enemyMove != "counter" )
+             {
+            if (GameObject.FindWithTag("Enemy"))
+            {
+                if (enemyStats = GameObject.FindWithTag("Enemy").GetComponent<Stats>())
+                {
+                    if (physicalAtkBuff == true && dmgDone == false)
                     {
+                        Debug.Log("This is a dbl strike by enemy");
+                        atkNoTriggerE.PlayFromTimeLines(16);
                         enemyStats.ChangeHealth(-160);
-                        Debug.Log("Double Strike");
+                       // Debug.Log("Double Strike");
                         ToonRevertAttack();
-                    physicalAtkBuff = false;
-                    GameManager.timelineActive = false;//put in every TRUE method
+                        physicalAtkBuff = false;
+                        //GameManager.timelineActive = false;//put in every TRUE method
 
+                    }
+                    else
+                    {
+                        if (dmgDone == false)
+                        {
+                            atkNoTrigger.PlayFromTimeLines(15);
+                            enemyStats.ChangeHealth(-40);
+                            Debug.Log("Regular Strike");
+                            // GameManager.timelineActive = false;//put in every TRUE method
+                        }
+
+                    }
                 }
-                    else 
-                    {
-                    if(dmgDone == false)
-                    {
-                        
-                        enemyStats.ChangeHealth(-40);
-                        Debug.Log("Regular Strike");
-                        GameManager.timelineActive = false;//put in every TRUE method
-                    }
-                        
-                    }
-                  }
+            }
+            else
+            {
+                Debug.Log("No enemy to hurt");
+            }
+          
+               
 
             }
 
@@ -246,7 +294,7 @@ public class PlayerActions : MonoBehaviour
         //    ButtonHandler.selection = 2;
 
         // }
-        GameManager.timelineActive = false;//put in every TRUE method
+        //GameManager.timelineActive = false;//put in every TRUE method
     }
     public void ToonRevertAttack() {
         Attributes attack;
@@ -285,12 +333,12 @@ public class PlayerActions : MonoBehaviour
         Attributes attack;
         attack = GameObject.FindWithTag("Player").GetComponent<Attributes>();
         Debug.Log("before charge:"+ attack);
-
+        promptSet.PlayFromTimeLines(6);//Lets see should change the var in other method...resetPrompt GM
         attack.changeAttack(2);
         Debug.Log("after charge:" + attack);
 
         physicalAtkBuff = true;
-        GameManager.timelineActive = false;//put in every TRUE method
+       // GameManager.timelineActive = false;//put in every TRUE method
 
     }
     public void ToonAtkMagicButtonAction() //A debuff on the enemy
@@ -330,6 +378,7 @@ public class PlayerActions : MonoBehaviour
             {
                 
                 defenseAmount = defense.changeDefense(1.5f); ; //reduce the target defense by half (I know)
+                atkMagP.PlayFromTimeLines(4);//Play successful cast
 
             }
             else
@@ -352,7 +401,7 @@ public class PlayerActions : MonoBehaviour
             // Debug.Log(attackFlag);
 
         }
-        GameManager.timelineActive = false;//put in every TRUE method
+       // GameManager.timelineActive = false;//put in every TRUE method
     }
     public void ToonDefendButtonAction()
     {
@@ -366,24 +415,27 @@ public class PlayerActions : MonoBehaviour
         //Defense actions
         public void TrueToonDefendButtonAction()
     {
-        
+       // Debug.Log("You made it");
         float defenseAmount = 0;
         Attributes defense;
 
-        if (GameObject.FindWithTag("Player"))
-        {
+       // if (GameObject.FindWithTag("Player"))
+       // {
             defense = GameObject.FindWithTag("Player").GetComponent<Attributes>();
 
             defenseAmount = defense.getDefense();
             if(physicalDefBuff == false)
             {
+                Debug.Log("You made it- def player");
                 defenseAmount = defense.changeDefense(.5f); ; //increase the target defense by half (I know)
+                defP.PlayFromTimeLines(9);
+                physicalDefBuff = true;
             }
             
-                
-                physicalDefBuff = true;
-        }
-        GameManager.timelineActive = false;//put in every TRUE method
+            
+               
+       // }
+       // GameManager.timelineActive = false;//put in every TRUE method
     }
 
     public void ToonCounterButtonAction()
@@ -422,7 +474,7 @@ public class PlayerActions : MonoBehaviour
         }
        // Debug.Log("Countering");
        */
-        GameManager.timelineActive = false;//put in every TRUE method
+       // GameManager.timelineActive = false;//put in every TRUE method
     }
     public void ToonGiveUpButtonAction()
     {
@@ -438,10 +490,11 @@ public class PlayerActions : MonoBehaviour
     {
       
         Debug.Log("I Surrender forreal");
+        DieP.PlayFromTimeLines(13);
 
         gameObject.SetActive(false);
 
-        GameManager.timelineActive = false;//put in every TRUE method
+        //GameManager.timelineActive = false;//put in every TRUE method
 
 
 
@@ -469,22 +522,27 @@ public class PlayerActions : MonoBehaviour
             if (playerStats = GameObject.FindWithTag("Player").GetComponent<Stats>())
             {
                 Debug.Log(" Magic yay");
-                playerStats.ChangeHealth(100);
+                playerStats.ChangeHealth(40);
+                Heal.PlayFromTimeLines(11);
 
             }
         }
         else
         {
+            magicFailP.PlayFromTimeLines(2);// at end calls game manager function to return UI
             Debug.Log("Failed cast");
+
         }
 
 
-        GameManager.timelineActive = false;//put in every TRUE method
+       // GameManager.timelineActive = false;//put in every TRUE method
 
 
     }
     IEnumerator WaitforPromptOver()
     {
+        
+        
        // Debug.Log("HEREEEE");
         while(GameManager.promptOver == false)
         {
@@ -495,35 +553,74 @@ public class PlayerActions : MonoBehaviour
         switch (GameManager.playerPrompt)//For those who dont need a timeline exactly this works but during anim things like atk, strike, counter you need TL
         {
             case 1:
-                Debug.Log("To do: " + "defend");
-                TrueToonDefendButtonAction();
+                if (GameObject.FindWithTag("Enemy"))
+                {
+                    Debug.Log("To do: " + "defend");
+                    TrueToonDefendButtonAction();
+                    //GameManager.timelineActive = false;
+                }
                 break;//repeat
             case 2:
+
                 Debug.Log("To do: " + "counter");
                 TrueToonCounterButtonAction();
+               // GameManager.timelineActive = false;
                 break;//repeat
             case 3:
                 Debug.Log("To do: " + "giveUp");
                 TrueToonGiveUpButtonAction();
+               // GameManager.timelineActive = false;
                 break;//repeat
             case 4:
+                if (GameObject.FindWithTag("Enemy"))
+                {
                 Debug.Log("To do: " + "defMagic");
                 TrueToonDefMagicButtonAction();
+                }
+                   
+               // GameManager.timelineActive = false;
                 break;//repeat
             case 5: //attack number
-               // attackP.PlayFromTimeLines(0); //play the anim of knight atk(put this in method does it matter?) Yes for it needs to happen during sword strike.
+                if (GameObject.FindWithTag("Enemy"))
+                {
+                attackP.PlayFromTimeLines(0);
+                //TrueToonAttackButtonAction();
+                GameManager.timelineActive = false;
+                ButtonHandler.buttonsMade = false;
+                }
+                    
+                
+
+                //  //play the anim of knight atk(put this in method does it matter?) Yes for it needs to happen during sword strike.
                 break;//repeat
             case 6:
+                if (GameObject.FindWithTag("Enemy"))
+                {
                 Debug.Log("Doing: " + "strike");
                 TrueToonStrikeButtonAction();
+                GameManager.timelineActive = false;
+                }
+
+                    
                 break;//repeat
             case 7:
+                if (GameObject.FindWithTag("Enemy"))
+                {
+
                 Debug.Log("To do: " + "charge");
                 TrueToonChargeButtonAction();
+                GameManager.timelineActive = false;
+                }
+               
                 break;//repeat
             case 8:
+                if (GameObject.FindWithTag("Enemy"))
+                {
                 Debug.Log("To do: " + "atkMag");
                 TrueToonAtkMagicAction();
+                GameManager.timelineActive = false;
+                }
+                
                 break;//repeat
             
                 
@@ -544,7 +641,7 @@ public class PlayerActions : MonoBehaviour
     IEnumerator Example()
     {
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         ButtonHandler.attackFlag = false;
         // Debug.Log(attackFlag);
         yield return ButtonHandler.attackFlag;

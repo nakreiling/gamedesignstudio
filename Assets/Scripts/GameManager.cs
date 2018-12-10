@@ -5,6 +5,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     public static bool playerTurn, timelineActive, promptOver;
     public static int rand, count, playerPrompt, enemyPrompt;
+    private float temp;
+    Stats enemyStats;
+    Stats playerStats;
     //PlayerPrompt...1-defend 2-counter 3-giveUp 4-defMagic 5-attack 6-strike 7 -charge 8-atkMag
     //Enemy Prompt...9-defend 10-counter giveUp-11, defMagic-12 attack-13 strike-14 charge-15 atkMag-16
     // Use this for initialization
@@ -18,13 +21,15 @@ public class GameManager : MonoBehaviour {
     Vector3 giveUpPos;
 
     Vector3 tempAtk, tempDefend, tempCounter, tempStrike, tempAtkMag, tempDefMag, tempCharge, tempGiveUp;
-    GameObject rockPlayer,rockEnemy, attack, defend, strike, charge, giveUp, AtkMag, DefMag, counter, atkPromptPlayer, atkMagPromptPlayer, chargePromptPlayer, strikePromptPlayer, defPromptPlayer, counterPromptPlayer, giveUpPromptPlayer, defMagPromptPlayer, atkPromptEnemy, strikePromptEnemy, chargePromptEnemy, atkMagPromptEnemy, defPromptEnemy, giveUpPromptEnemy, counterPromptEnemy, defMagPromptEnemy;
+    GameObject rockPlayer, rockEnemy, attack, defend, strike, charge, giveUp, AtkMag, DefMag, counter, atkPromptPlayer, atkMagPromptPlayer, chargePromptPlayer, strikePromptPlayer, defPromptPlayer, counterPromptPlayer, giveUpPromptPlayer, defMagPromptPlayer, atkPromptEnemy, strikePromptEnemy, chargePromptEnemy, atkMagPromptEnemy, defPromptEnemy, giveUpPromptEnemy, counterPromptEnemy, defMagPromptEnemy;
     //Above is all object I turn off at start included sprites I need.
     //Collection of all objects
     GameObject[] gos;
 
-    enum moves {ATTACK=1, STRIKE=2, ATKMAG=3, CHARGE=4, DEFEND=5, COUNTER=6, DEFMAG=7, GIVEUP=8 }
-    void Start () {
+    enum moves { ATTACK = 1, STRIKE = 2, ATKMAG = 3, CHARGE = 4, DEFEND = 5, COUNTER = 6, DEFMAG = 7, GIVEUP = 8 }
+
+
+    void Start() {
 
         timelineActive = false;
 
@@ -38,7 +43,7 @@ public class GameManager : MonoBehaviour {
         atkMagPromptPlayer = GameObject.Find("atkMagPromptPlayer");
         atkMagPromptPlayer.SetActive(false);
 
-        strikePromptPlayer= GameObject.Find("strikePromptPlayer");
+        strikePromptPlayer = GameObject.Find("strikePromptPlayer");
         strikePromptPlayer.SetActive(false);
 
         chargePromptPlayer = GameObject.Find("chargePromptPlayer");
@@ -55,7 +60,7 @@ public class GameManager : MonoBehaviour {
 
         defMagPromptPlayer = GameObject.Find("defMagPromptPlayer");
         defMagPromptPlayer.SetActive(false);
-        
+
         //enemy sprite turn off Enemy
         atkPromptEnemy = GameObject.Find("atkPromptEnemy");
         atkPromptEnemy.SetActive(false);//test here
@@ -87,24 +92,24 @@ public class GameManager : MonoBehaviour {
 
         rockPlayer.SetActive(false);
         rockEnemy.SetActive(false);
-        
+
         attack = GameObject.Find("Attack");
         defend = GameObject.Find("Defend");
         strike = GameObject.Find("Strike");
         counter = GameObject.Find("Counter");
         charge = GameObject.Find("Charge");
         AtkMag = GameObject.Find("AtkMagic");
-        DefMag= GameObject.Find("DefMagic");
+        DefMag = GameObject.Find("DefMagic");
         giveUp = GameObject.Find("GiveUp");
 
-         attckPos= attack.transform.position;
-         defendPos = defend.transform.position;
-         strikePos = strike.transform.position;
-         counterPos = counter.transform.position;
-         chargePos = charge.transform.position;
-         AtkMagPos = AtkMag.transform.position;
-         DefMagPos = DefMag.transform.position;
-         giveUpPos = giveUp.transform.position;
+        attckPos = attack.transform.position;
+        defendPos = defend.transform.position;
+        strikePos = strike.transform.position;
+        counterPos = counter.transform.position;
+        chargePos = charge.transform.position;
+        AtkMagPos = AtkMag.transform.position;
+        DefMagPos = DefMag.transform.position;
+        giveUpPos = giveUp.transform.position;
 
         tempAtk = attckPos;
         tempDefend = defendPos;
@@ -122,26 +127,54 @@ public class GameManager : MonoBehaviour {
         //counter.SetActive(false); charge.SetActive(false); AtkMag.SetActive(false);
         //DefMag.SetActive(false); attack.SetActive(false);giveUp.SetActive(false);
 
-
-
+        enemyStats = GameObject.FindWithTag("Enemy").GetComponent<Stats>();
+        playerStats = GameObject.FindWithTag("Player").GetComponent<Stats>();
 
         count = 0;
-        rand = 1; //=Random.Range(1, 3);
+        rand = 2; //=Random.Range(1, 3);
 
-        
-       
-        
+
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-       // Debug.Log(promptOver);
-        if (Input.GetKeyDown(KeyCode.T))
+        
+        if (Input.GetKeyDown(KeyCode.X))
         {
             turnOffMagic();
             // Activate.activateflag = true;
-            Debug.Log("IS gone");
+            Debug.Log("Magic IS gone");
+        }
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            playerStats = GameObject.FindWithTag("Player").GetComponent<Stats>();
+            playerStats.ChangeHealth(-100);
+
+            foreach (GameObject go in gos)
+                {
+                  if (go.layer == (10) && go.CompareTag("Player"))
+                {
+                  go.SetActive(false); //turns off the button objects :o only when space is pressed
+                 Debug.Log("DESTROY -Player");
+                }
+                }
+
+        }
+        else if (Input.GetKeyDown(KeyCode.V))
+        {
+            enemyStats.ChangeHealth(-100);
+            enemyStats = GameObject.FindWithTag("Enemy").GetComponent<Stats>(); 
+            foreach (GameObject go in gos)
+            {
+                if (go.layer == (11) && go.CompareTag("Enemy"))
+                {
+                    go.SetActive(false); //turns off the button objects :o only when space is pressed
+                    Debug.Log("DESTROY -Enemy");
+                }
+            }
         }
 
         //  Debug.Log("Rand is: " + rand);
@@ -149,8 +182,8 @@ public class GameManager : MonoBehaviour {
         //Debug.Log("rand is: "+ rand);
         if (rand == 1)//players turn
         {
-            defend.SetActive(false); 
-            counter.SetActive(false); 
+            defend.SetActive(false);
+            counter.SetActive(false);
             DefMag.SetActive(false);
             giveUp.SetActive(false);
 
@@ -158,27 +191,28 @@ public class GameManager : MonoBehaviour {
             playerTurn = true;
 
         }
-        
+
         else
         {
+
             //defend.SetActive(true); counter.SetActive(true); DefMag.SetActive(true); giveUp.SetActive(true);
             playerTurn = false; //enemy turn
         }
 
-        
 
 
-        if(GameObject.FindGameObjectsWithTag("Player").Length < 1)
+
+        if (GameObject.FindGameObjectsWithTag("Player").Length < 1)
         {
             rockPlayer.SetActive(true);
         }
-        else if(GameObject.FindGameObjectsWithTag("Enemy").Length < 1)
+        else if (GameObject.FindGameObjectsWithTag("Enemy").Length < 1)
         {
             rockEnemy.SetActive(true);
         }
-        
+        //Debug.Log(timelineActive);
         //turn off ui during cutscenes
-        if(timelineActive == true)
+        if (timelineActive == true)
         {
             foreach (GameObject go in gos)
             {
@@ -199,7 +233,7 @@ public class GameManager : MonoBehaviour {
             }
 
 
-           // Debug.Log("it is true");
+            // Debug.Log("it is true");
             attckPos = new Vector3(0, 220, 0);
             defendPos = new Vector3(0, 220, 0);
             counterPos = new Vector3(0, 220, 0);
@@ -208,13 +242,13 @@ public class GameManager : MonoBehaviour {
             DefMagPos = new Vector3(0, 220, 0);
             chargePos = new Vector3(0, 220, 0);
             giveUpPos = new Vector3(0, 220, 0);
-           // Debug.Log("MOVE");
+            // Debug.Log("MOVE");
         }
-        else if(timelineActive == false)
+        else if (timelineActive == false)
         {
 
 
-          //  Debug.Log("it is now false");
+            //  Debug.Log("it is now false");
 
             /*
             attack.transform.position = tempAtk;
@@ -230,10 +264,11 @@ public class GameManager : MonoBehaviour {
 
         }
 
-
+   
 
     }
-
+  
+    
     public static int addCount()
     {
        return count++;
