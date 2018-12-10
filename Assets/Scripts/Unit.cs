@@ -56,6 +56,7 @@ public class Unit : MonoBehaviour
             tileY = currentPath[1].y;
 
             transform.position = map.TileCoordToWorldCoord(tileX, tileY);   // Update our unity world position
+            //transform.position = new Vector3(tileX, tileY, (float)-0.75);
 
             // Remove the old "current" tile
             currentPath.RemoveAt(0);

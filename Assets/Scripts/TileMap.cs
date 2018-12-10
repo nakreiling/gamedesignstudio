@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TileMap : MonoBehaviour
 {
@@ -15,16 +16,38 @@ public class TileMap : MonoBehaviour
 
     int mapSizeX = 20;
     int mapSizeY = 20;
+    //int counter;
 
     void Start()
     {
-        for (int k = 0; k < selectedUnit.Count; k++)
-        {
-            selectedUnit[k].GetComponent<Unit>().tileX = (int)selectedUnit[k].transform.position.x;
-            selectedUnit[k].GetComponent<Unit>().tileY = (int)selectedUnit[k].transform.position.y;
-            selectedUnit[k].GetComponent<Unit>().map = this;
-            Debug.Log("Hello");
-        }
+        Debug.Log("Counter: " + UnitManager.counter);
+        //if (UnitManager.counter) {
+            for (int k = 0; k < selectedUnit.Count; k++) {
+                selectedUnit[k].GetComponent<Unit>().tileX = (int)selectedUnit[k].transform.position.x;
+                selectedUnit[k].GetComponent<Unit>().tileY = (int)selectedUnit[k].transform.position.y;
+                selectedUnit[k].GetComponent<Unit>().map = this;
+                //UnitManager.unitList = new List<GameObject>();
+                //UnitManager.unitList.Add(selectedUnit[k]);
+                //Debug.Log(selectedUnit[k].transform.position);
+            }
+            //UnitManager.counter = false;
+            //selectedUnit[0].GetComponent<Unit>().tileX = (int)selectedUnit[0].transform.position.x;
+            //selectedUnit[0].GetComponent<Unit>().tileY = (int)selectedUnit[0].transform.position.y;
+            //selectedUnit[0].GetComponent<Unit>().map = this;
+            //UnitManager.unit1 = selectedUnit[0];
+        /*} else {
+            Debug.Log("+++++++++++++++++++++");
+            for (int k = 1; k < UnitManager.unitList.Count; k++) {
+                selectedUnit[k].GetComponent<Unit>().tileX = UnitManager.unitList[k].GetComponent<Unit>().tileX;
+                selectedUnit[k].GetComponent<Unit>().tileY = UnitManager.unitList[k].GetComponent<Unit>().tileY;
+                selectedUnit[k].GetComponent<Unit>().map = this;
+                selectedUnit.Add(UnitManager.unitList[k]);
+                //selectedUnit[k].GetComponent<Unit>().tileY = UnitManager.unitList[k].GetComponent<Unit>().tileY;
+                //Debug.Log("Bitch: " + selectedUnit[k].transform.position);
+            }
+            selectedUnit[0] = UnitManager.unit1;
+        }*/
+
         GenerateMapData();
         GeneratePathFindingGraph();
         GenerateMapVisuals();
@@ -222,8 +245,21 @@ public class TileMap : MonoBehaviour
         if (victim != -1)
         {
             Debug.Log("Attacking enemy!");
-            Destroy(selectedUnit[victim]);
-            selectedUnit.RemoveAt(victim);
+            /*for (int k = 1; k < UnitManager.unitList.Count; k++) {
+                UnitManager.unitList[k] = selectedUnit[k];
+                //Debug.Log(selectedUnit[k].transform.position);
+            }
+            UnitManager.unit1 = selectedUnit[0];*/
+            //selectedUnit[victim].
+            /*float targetHealth = selectedUnit[victim].GetComponent<Unit>().GetComponentInChildren<Stats>().getHealth();
+            UnitManager.EnemyBattleResultHealth = targetHealth;
+            float attackerHealth = selectedUnit[unitSelector].GetComponent<Unit>().GetComponentInChildren<Stats>().getHealth();
+            UnitManager.PlayerBattleResultHealth = attackerHealth;*/
+            //selectedUnit[unitSelector].GetComponent<Unit>().tileX;
+
+            SceneManager.LoadScene("BattleScene");
+            //Destroy(selectedUnit[victim]);
+            //selectedUnit.RemoveAt(victim);
         }
         else
         {
