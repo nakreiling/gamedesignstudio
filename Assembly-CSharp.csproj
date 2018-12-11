@@ -61,7 +61,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Game Jam Template\Scripts\FlexibleUI\FlexibleUI.cs" />
+    <Compile Include="Assets\Game Jam Template\Scripts\FlexibleUI\FlexibleUIButton.cs" />
+    <Compile Include="Assets\Game Jam Template\Scripts\FlexibleUI\FlexibleUIData.cs" />
+    <Compile Include="Assets\Game Jam Template\Scripts\FlexibleUI\FlexibleUIImage.cs" />
+    <Compile Include="Assets\Game Jam Template\Scripts\FlexibleUI\FlexibleUISlider.cs" />
+    <Compile Include="Assets\Game Jam Template\Scripts\FlexibleUI\FlexibleUIText.cs" />
+    <Compile Include="Assets\Game Jam Template\Scripts\Menu\DontDestroy.cs" />
+    <Compile Include="Assets\Game Jam Template\Scripts\Menu\EventSystemChecker.cs" />
+    <Compile Include="Assets\Game Jam Template\Scripts\Menu\MenuObject.cs" />
+    <Compile Include="Assets\Game Jam Template\Scripts\Menu\MenuSettings.cs" />
+    <Compile Include="Assets\Game Jam Template\Scripts\Menu\Pause.cs" />
+    <Compile Include="Assets\Game Jam Template\Scripts\Menu\PlayMusic.cs" />
+    <Compile Include="Assets\Game Jam Template\Scripts\Menu\QuitApplication.cs" />
+    <Compile Include="Assets\Game Jam Template\Scripts\Menu\SetAudioLevels.cs" />
+    <Compile Include="Assets\Game Jam Template\Scripts\Menu\ShowPanels.cs" />
+    <Compile Include="Assets\Game Jam Template\Scripts\Menu\StartOptions.cs" />
     <Compile Include="Assets\GridMove.cs" />
+    <Compile Include="Assets\infinite_fanstasy_free\Scene\infinite_fantasy_demo.cs" />
     <Compile Include="Assets\KY_effects\Script\ConGUI.cs" />
     <Compile Include="Assets\KY_effects\Script\Lighting.cs" />
     <Compile Include="Assets\Scripts\Activate.cs" />
@@ -73,6 +90,7 @@
     <Compile Include="Assets\Scripts\ButtonHandler.cs" />
     <Compile Include="Assets\Scripts\EnemyActions.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Menu\UIManager.cs" />
     <Compile Include="Assets\Scripts\PlayerActions.cs" />
     <Compile Include="Assets\Scripts\PlayerControllerRigidBody.cs" />
     <Compile Include="Assets\Scripts\PlayerControllerTransform.cs" />
@@ -91,8 +109,29 @@
     <Compile Include="Assets\TimelineEvents\Scripts\TimelineEvents\TimelineEventMixerBehaviour.cs" />
     <Compile Include="Assets\TimelineEvents\Scripts\TimelineEvents\TimelineEventTrack.cs" />
     <Compile Include="Assets\UETools\Magic_Particle_Effects\Scripts\CameraMovement.cs" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets\KY_effects\MagicEffectsPackFree\ReadMe.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\Game Jam Template\Fonts\OpenSans\License!.txt" />
+    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\UETools\Magic_Particle_Effects\Readme.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\infinite_fanstasy_free\README.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
+    <None Include="Assets\Game Jam Template\GameJamTemplateReadMe.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
+    <None Include="Assets\Game Jam Template\README.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/Thomas/Documents/GitHub/gamedesignstudio/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

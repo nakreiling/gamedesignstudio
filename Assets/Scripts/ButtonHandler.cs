@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
+using Random = UnityEngine.Random;
 
 public class ButtonHandler : MonoBehaviour //change name to TurnHandler when merged
 {
@@ -125,7 +127,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
 
         if (isPlayerTurn)
         {
-
+            
 
            // Debug.Log("activate!");
             strikeFlag = false;//reset bool
@@ -213,17 +215,149 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                 //}
                 //Debug.Log("PRESSED");
                 action = GameObject.FindWithTag("Enemy").GetComponent<EnemyActions>();
-                if(GameManager.count == 0)
-                 {
-                     move = 1;
+                // if(GameManager.count == 0)
+                //  {
+                //     move = 1;
+                // }
+                // else
+                // {
+                //     move = 2;
+                // }
+                //ROA AI
+
+                //need to create another health3 to represent the NPC will create cases for Defense based on that
+                //can use a Switch statement to alter bases on the class of the Player character; "Knight, Mage, Solider" etc.
+                //also can still implement a discrete cases based on the fact that the range of health can be considered a discrete case
+
+                float health = GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth(); //GameObject.FindWithTag("Player").GetComponent<Stats>.getHealth() //Better way to do this?
+                int health2 = (int)Math.Ceiling(health);//why was this such a pain in the arse?
+
+                float healthE = GameObject.FindWithTag("Enemy").GetComponent<Stats>().getHealth();
+                //.GetComponent<Stats>().getHealth();//u""h oh...where is the Enemy's health stored at???
+                int health3 = (int)Math.Ceiling(healthE); //this is for the NPC/Enemy's health
+                //If the above line "Math" specify that you want to use the UnityEngine method for random 
+                if (health3 <= 100 && health3 > 75) //I just realized that I have 4 discrete cases could have used a Switch statement anyway...fail...
+                { //This is case I when against the Knight class
+                    int dice = Random.Range(1, 102); //so use UnityEngine Random is the correct way?
+                    if (dice <= 50)
+                    {
+                        enemyMove = "defend";
+                      //  action.attackMethod();
+                    }
+                    else //change back to else if but shouldn't need it if odds are 50/50
+                    {
+                        enemyMove = "counter";
+                       // strikeFlag = true;
+                      // action.strikeMethod();
+                    }
+                    /*
+                    else if (dice >= 28 && dice < 42)
+                    {
+                        action.chargeMethod();
+                        enemyMove = "giveup";
+                    }
+                    else
+                    {
+                        action.atkMagMethod();
+                        enemyMove = "defMagic";
+                    }
+                    */
                 }
-                 else
-                 {
-                     move = 2;
-                 }
-                 
-               // move = 1;//Random.Range(1, 5); //chooses a number between 1 and 4 //neeed 5
+                else if (health3 <= 75 && health3 > 50) //case II for Knight Class
+                {
+                    int dice = Random.Range(1, 104); //so unlike with a Switch Statement have to creat the "dice" variable each if scope
+                    if (dice <= 40)
+                    {
+                        enemyMove = "defend";
+                       // action.attackMethod();
+                    }
+                    else if (dice >= 41 && dice > 81)
+                    {
+                        enemyMove = "counter";
+                       // strikeFlag = true;
+                       //action.strikeMethod();
+                    }
+                    else   // realzied I didn't need this else if ( dice >=82 && dice < 102)
+                    {
+                        //action.chargeMethod();//is this line an error? Need to look into chargeMethod, how does it affect/control "giveUp"
+                        enemyMove = "giveUp";
+                    }
+
+                }
+                else if (health3 <= 50 && health3 > 25) //case III 
+                {
+                    int dice = Random.Range(1, 104);
+                    if (dice <= 40)
+                    {
+                        enemyMove = "defend";
+                       // action.attackMethod();
+                    }
+                    else if (dice >= 41 && dice < 56)
+                    {
+                        enemyMove = "counter";
+                       // strikeFlag = true;
+                       // action.strikeMethod();
+                    }
+                    else if (dice >= 56 && dice < 62)
+                    {
+                       
+                            enemyMove = "giveUp";
+                          //  action.chargeMethod();
+                        
+                    }
+                    else
+                    {
+                        enemyMove = "defMagic";
+                       // action.atkMagMethod();
+                        
+                    }
+                }
+                else //case 4 Health as less than 25%
+                {
+                    int dice = Random.Range(1, 104);
+                    if (dice <= 1)
+                    {
+                        enemyMove = "defend";
+                        //action.attackMethod();
+                    }
+                    else if (dice >= 15 && dice > 31)
+                    {
+                        enemyMove = "counter";
+                       // strikeFlag = true;
+                       // action.strikeMethod();
+                    }
+                    else if (dice >= 31 && dice < 42)
+                    {
+                     
+                        enemyMove = "giveUp";
+                       // action.chargeMethod();
+                    }
+                    else
+                    {
+                        enemyMove = "defMagic";
+                       // action.atkMagMethod();
+                    }
+                }
+
+
+                // move = 1;//Random.Range(1, 5); //chooses a number between 1 and 4 //neeed 5
                 //Set the appropiate methods
+                switch (enemyMove)
+                {
+                    case "defend":
+                        move = 1;
+                        break;
+                    case "counter":
+                        move = 2;
+                        break;
+                    case "giveUp":
+                        move = 3;
+                        break;
+                    case "defMagic":
+                        move = 4;
+                        break;
+                }
+                Debug.Log(move);
                 if (move == 1)
                 {
                     enemyMove = "defend";
@@ -255,6 +389,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                     action.defMagMethod();
                     
                 }
+                
 
                 buttonList[selectedButton].action();
                 buttonList[selectedButton].image.color = Color.yellow;
@@ -270,7 +405,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
         }
         else //enemy turn
         {
-            
+            PlayerActions.isCountering = false;
             //counterFlag = false; //reset upon turn switch so no repeat guarentee
             //GameManager.rand = 2; THIS WAS THE PROBLEM
             if(GameManager.timelineActive == false)
@@ -335,21 +470,163 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
 
 
                 action = GameObject.FindWithTag("Enemy").GetComponent<EnemyActions>();
-               // if (GameManager.count == 0)
-               // {
+                // if (GameManager.count == 0)
+                // {
                 //    move = 1;
-               // }
-               // else
+                // }
+                // else
                 //{
-                   // move = 4;
-               // }
-                move = 1;//Random.Range(1, 5); //chooses a number between 1 and 4 
+                // move = 4;
+                // }
+                //ROA Enemy AI
+                //need to create another health3 to represent the NPC will create cases for Defense based on that
+                //can use a Switch statement to alter bases on the class of the Player character; "Knight, Mage, Solider" etc.
+                //also can still implement a discrete cases based on the fact that the range of health can be considered a discrete case
+                float health = GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth(); //GameObject.FindWithTag("Player").GetComponent<Stats>.getHealth() //Better way to do this?
+                int health2 = (int)Math.Ceiling(health);//why was this such a pain in the arse?
+
+                //Include an if statement that checks for the defense of the Player Unit, if it is "high" then use else if for "med" and else for "low"
+                //in the if statement encapsulate the Switch for an engagement with a unit that has different attributes
+
+
+                if (health2 >= 100)
+                {
+                    int dice = Random.Range(1, 102); //so use UnityEngine Random is the correct way?
+                    if (dice <= 19)
+                    {
+                        enemyMove = "Attack";
+                        Debug.Log("Skelly Attack Case I"); //need this to figure out how I broke combat :O
+                                                           //action.attackMethod();
+                    }
+                    else if (dice >= 20 && dice < 40)
+                    {
+                        enemyMove = "atkMagic";
+                        // strikeFlag = true;
+                        // action.strikeMethod();
+                    }
+                    else if (dice >= 41 && dice < 65)
+                    {
+                        enemyMove = "charge";
+                        // action.chargeMethod();
+
+                    }
+                    else //maybe not 50%
+                    {
+                        enemyMove = "strike";
+                        //  action.atkMagMethod();
+
+                    }
+                }
+                else if (health2 < 100 && health2 >= 75)
+                {
+                    int dice = Random.Range(1, 104); //so unlike with a Switch Statement have to creat the "dice" variable each if scope
+                    if (dice <= 10)
+                    {
+                        enemyMove = "attack";
+                        Debug.Log("Skelly Attack Case II");
+                        // action.attackMethod();
+                    }
+                    else if (dice >= 11 && dice < 41)
+                    {
+                        enemyMove = "strike";
+                        // strikeFlag = true;
+                        //action.strikeMethod();
+                    }
+                    else if (dice >= 41 && dice < 83)
+                    {
+                        enemyMove = "charge";
+                        //  action.chargeMethod();
+
+                    }
+                    else
+                    {
+                        enemyMove = "atkMagic";
+                        //action.atkMagMethod();
+
+                    }
+                }
+                else if (health2 < 74 && health2 >= 50)
+                {
+                    int dice = Random.Range(1, 104);
+                    if (dice <= 25)
+                    {
+                        enemyMove = "attack";
+                        Debug.Log("Skelly Attack Case III");
+                        // action.attackMethod();
+                    }
+                    else if (dice >= 26 && dice < 66)
+                    {
+                        enemyMove = "strike";
+                        // strikeFlag = true;
+                        // action.strikeMethod();
+                    }
+                    else if (dice >= 67 && dice < 87)
+                    {
+                        enemyMove = "charge";
+                        //  action.chargeMethod();
+
+                    }
+                    else
+                    {
+                        enemyMove = "atkMagic";
+                        //action.atkMagMethod();
+
+                    }
+                }
+                else
+                {
+                    int dice = Random.Range(1, 104);
+                    if (dice <= 40)
+                    {
+                        enemyMove = "attack";
+                        Debug.Log("Skelly Attack Case IV");
+                        //action.attackMethod();
+                    }
+                    else if (dice >= 41 && dice < 81)
+                    {
+                        enemyMove = "strike";
+                        //strikeFlag = true;
+                        //action.strikeMethod();
+                    }
+                    else if (dice >= 82 && dice < 92)
+                    {
+                        enemyMove = "charge";
+                        action.chargeMethod();
+
+                    }
+                    else
+                    {
+                        enemyMove = "atkMagic";
+                        //action.atkMagMethod();
+
+                    }
+                }
+
+                switch (enemyMove)
+                {
+                    case "attack":
+                        move = 1;
+                        break;
+                    case "strike":
+                        move = 2;
+                        break;
+                    case "charge":
+                        move = 3;
+                        break;
+                    case "atkMagic":
+                        move = 4;
+                        break;
+                }
+
+                Debug.Log(enemyMove);
+                // move = 1;//Random.Range(1, 5); //chooses a number between 1 and 4 
                 counterFlag = false;
 
                 buttonList[selectedButton].action();
                 buttonList[selectedButton].image.color = Color.yellow; //Do action after the changes are made
 
                 //Set the appropiate methods
+                
                 if (move == 1)
                 {
                     GameManager.enemyPrompt = 13;
@@ -376,9 +653,6 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                     action.atkMagMethod();
                     enemyMove = "atkMagic";
                 }
-
-                //Debug.Log(strikeFlag);
-
                 
 
                 // GameObject[] gos = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[]; //will return an array of all GameObjects in the scene

@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour {
         playerStats = GameObject.FindWithTag("Player").GetComponent<Stats>();
 
         count = 0;
-        rand = 2; //=Random.Range(1, 3);
+        rand = 1; //=Random.Range(1, 3);
 
 
 
