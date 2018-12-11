@@ -10,7 +10,9 @@ public class UnitManager : MonoBehaviour {
     //Goes back to if recorded position {Vector 3 and Quaterion}
 
     public static UnitManager Instance; //instance what does that mean here?
-
+    public static List<int> unitXList;
+    public static List<int> unitYList;
+    public static bool tileMapUsed = false;
     private static float playerBattleResultHealth, enemyBattleResultHealth;
     private static Vector3 playerMapPosition, enemyMapPosition;
     private static Quaternion playerRotation, enemyRotation;  //idea is to use these two variables in conjunction to record where on the map the two combatants are before switching 

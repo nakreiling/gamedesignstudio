@@ -34,18 +34,39 @@ public class TileMap : MonoBehaviour
     void Start()
     {
         //just for testing purposes to pull out the data of the test Skelly and Knights health after Battle has occured
-       
+
         //float healthE = GameObject.FindWithTag("Enemy").GetComponent<Stats>().getHealth();
         //Issue only works with singular Knight and Skelly
         //Need a way to record which two units were actually fighting before restoring health
-       
-        
-        for (int k = 0; k < selectedUnit.Count; k++)
+
+
+        if (UnitManager.tileMapUsed == false)
         {
-            selectedUnit[k].GetComponent<Unit>().tileX = (int)selectedUnit[k].transform.position.x;
-            selectedUnit[k].GetComponent<Unit>().tileY = (int)selectedUnit[k].transform.position.y;
-            selectedUnit[k].GetComponent<Unit>().map = this;
-            Debug.Log("Hello");
+            UnitManager.unitXList = new List<int>();
+            UnitManager.unitYList = new List<int>();
+            for (int k = 0; k < selectedUnit.Count; k++)
+            {
+                selectedUnit[k].GetComponent<Unit>().tileX = (int)selectedUnit[k].transform.position.x;
+                selectedUnit[k].GetComponent<Unit>().tileY = (int)selectedUnit[k].transform.position.y;
+                selectedUnit[k].GetComponent<Unit>().map = this;
+                Debug.Log("Hello");
+                UnitManager.tileMapUsed = true;
+                UnitManager.unitXList.Add(selectedUnit[k].GetComponent<Unit>().tileX);
+                UnitManager.unitYList.Add(selectedUnit[k].GetComponent<Unit>().tileY);
+            }
+        }
+        else
+        {
+            Debug.Log("Instantiating units from static array.");
+            Debug.Log("Length of selectedUnit " + selectedUnit.Count);
+            Debug.Log("Length of unitXList " + UnitManager.unitXList.Count);
+            for (int k = 0; k < UnitManager.unitXList.Count; k++)
+            {
+                selectedUnit[k].GetComponent<Unit>().tileX = UnitManager.unitXList[k];
+                selectedUnit[k].GetComponent<Unit>().tileY = UnitManager.unitYList[k];
+                selectedUnit[k].transform.position = this.TileCoordToWorldCoord(UnitManager.unitXList[k], UnitManager.unitYList[k]);
+                selectedUnit[k].GetComponent<Unit>().map = this;
+            }
         }
         GenerateMapData();
         GeneratePathFindingGraph();
@@ -278,7 +299,12 @@ public class TileMap : MonoBehaviour
             }
             */
             //Now testing if statements to see if 1) They correctly identify the Enemy and player 2) Health is being loaded up correctly based on assumption of correct ID
-
+            for (int k = 0; k < selectedUnit.Count; k++)
+            {
+                UnitManager.unitXList[k] = selectedUnit[k].GetComponent<Unit>().tileX;
+                UnitManager.unitYList[k] = selectedUnit[k].GetComponent<Unit>().tileY;
+                Debug.Log(UnitManager.unitXList[k] + ", " + UnitManager.unitYList[k]);
+            }
             if (selectedUnit[victim].CompareTag("Enemy"))
             {
                 float targetHealth = selectedUnit[victim].GetComponent<Unit>().GetComponentInChildren<Stats>().getHealth(); //unit being attacked
