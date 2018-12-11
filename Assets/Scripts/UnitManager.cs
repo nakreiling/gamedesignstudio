@@ -12,6 +12,10 @@ public class UnitManager : MonoBehaviour {
     public static UnitManager Instance; //instance what does that mean here?
     public static List<int> unitXList;
     public static List<int> unitYList;
+    public static List<int> healthValue;
+    public static int selectedUnit;
+    public static int selectedEnemy;
+    public static int battleWinner;
     public static bool tileMapUsed = false;
     private static float playerBattleResultHealth, enemyBattleResultHealth;
     private static Vector3 playerMapPosition, enemyMapPosition;

@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour {
 
         GameObject[] player_units = GameObject.FindGameObjectsWithTag("Player");
         GameObject[] enemy_units = GameObject.FindGameObjectsWithTag("Enemy"); //going to use this to help use peserve units between scenes
-
+        
 
         //Get list of objects that can be set active later
 
@@ -100,8 +100,12 @@ public class GameManager : MonoBehaviour {
             //To do: Timed Buffer
             //Debug.Log("I am the Player and its time to leave!"); //Player died
             float battleEndHealth = GameObject.FindWithTag("Enemy").GetComponent<Stats>().getHealth(); //recording the Health of the surviving, need to put it into the Unit Manager...
-            UnitManager.EnemyBattleResultHealth = battleEndHealth; //uh...does it need to be named seperately????
-            Debug.Log("NPC survived with: " + UnitManager.EnemyBattleResultHealth);
+            //UnitManager.EnemyBattleResultHealth = battleEndHealth; //uh...does it need to be named seperately????
+            Debug.Log("NPC survived with: " + battleEndHealth);
+            UnitManager.battleWinner = UnitManager.selectedEnemy;
+            UnitManager.healthValue[UnitManager.battleWinner] = (int)battleEndHealth;
+            Debug.Log("Battle winner index " + UnitManager.battleWinner);
+            Debug.Log("Battle winner health " + UnitManager.healthValue[UnitManager.battleWinner]);
             SceneManager.LoadScene("OverWorld"); //, LoadSceneMode.Single); //might need to switch to Asynchronous mode
         }
         else if (GameObject.FindWithTag("Enemy").GetComponent<Stats>().getHealth() < 1) //was <= 0
@@ -110,8 +114,13 @@ public class GameManager : MonoBehaviour {
             rockEnemy.SetActive(true); //I think we have to explicitly remove the NPC as well?
             //Debug.Log("I'm out of Here! Love Skelly."); //NPC died
             float battleEndHealth = GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth();
-            UnitManager.PlayerBattleResultHealth = battleEndHealth;
-            Debug.Log("Player survived with: " + UnitManager.PlayerBattleResultHealth); //Derp a lerp
+            //UnitManager.PlayerBattleResultHealth = battleEndHealth;
+            Debug.Log("Player survived with: " + battleEndHealth); //Derp a lerp
+            UnitManager.battleWinner = UnitManager.selectedUnit; //currently working backwards?
+            UnitManager.healthValue[UnitManager.battleWinner] = (int)battleEndHealth;
+            Debug.Log("Battle winner index " + UnitManager.battleWinner);
+            Debug.Log("Battle winner health " + UnitManager.healthValue[UnitManager.battleWinner]);
+
             SceneManager.LoadScene("OverWorld"); //, LoadSceneMode.Single);
         }
         //else if (GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth() <= 0)

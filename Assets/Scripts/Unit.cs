@@ -11,6 +11,7 @@ public class Unit : MonoBehaviour
     public TileMap map;
     public bool isDead;
     public Node targetNode;
+    public int healthBar;
 
     public List<Node> currentPath = null;
 

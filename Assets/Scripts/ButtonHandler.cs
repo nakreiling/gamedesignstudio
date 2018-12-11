@@ -88,10 +88,10 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
         //UnitManager.PlayerBattleResultHealth = battleEndHealth; //I think this is giving Player 100 health, but doesn't explain skelly having 50 when he should have 75
 
         //needs to be changed to identify unit based on position, look at TileMap for how to alter
-        GameObject.FindWithTag("Enemy").GetComponent<Stats>().setHealth(UnitManager.EnemyBattleResultHealth); //we need a setter for the Units health that can set it based on what is from the Static (DB) class
-        Debug.Log("The Battle Mode has started,known health of Enemy is: " + UnitManager.EnemyBattleResultHealth);//Derpy?
-        GameObject.FindWithTag("Player").GetComponent<Stats>().setHealth(UnitManager.PlayerBattleResultHealth); //okay so if I did this correctly we will pass Health data (and more) from the two scenes
-        Debug.Log("The Battle Mode has started,known health of pdog is: " + UnitManager.PlayerBattleResultHealth);//RRREEEEE
+        GameObject.FindWithTag("Enemy").GetComponent<Stats>().setHealth(UnitManager.healthValue[UnitManager.selectedEnemy]); //we need a setter for the Units health that can set it based on what is from the Static (DB) class
+        Debug.Log("The Battle Mode has started,known health of Enemy is: " + UnitManager.healthValue[UnitManager.selectedEnemy]);//Derpy?
+        GameObject.FindWithTag("Player").GetComponent<Stats>().setHealth(UnitManager.healthValue[UnitManager.selectedUnit]); //okay so if I did this correctly we will pass Health data (and more) from the two scenes
+        Debug.Log("The Battle Mode has started,known health of pdog is: " + UnitManager.healthValue[UnitManager.selectedUnit]);//RRREEEEE
     }
 
 
@@ -225,13 +225,13 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                     if (dice <= 50)
                     {
                         enemyMove = "defend";
-                        action.attackMethod();
+                        //action.attackMethod();
                     }
                     else //change back to else if but shouldn't need it if odds are 50/50
                     {
                         enemyMove = "counter";
-                        strikeFlag = true;
-                        action.strikeMethod();
+                       // strikeFlag = true;
+                        //action.strikeMethod();
                     }
                     /*
                     else if (dice >= 28 && dice < 42)
@@ -252,17 +252,17 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                     if (dice <= 40)
                     {
                         enemyMove = "defend";
-                        action.attackMethod();
+                        //action.attackMethod();
                     }
                     else if (dice >= 41 && dice > 81)
                     {
                         enemyMove = "counter";
-                        strikeFlag = true;
-                        action.strikeMethod();
+                        //strikeFlag = true;
+                        //action.strikeMethod();
                     }
                     else   // realzied I didn't need this else if ( dice >=82 && dice < 102)
                     {
-                        action.chargeMethod();//is this line an error? Need to look into chargeMethod, how does it affect/control "giveUp"
+                       // action.chargeMethod();//is this line an error? Need to look into chargeMethod, how does it affect/control "giveUp"
                         enemyMove = "giveUp";
                     }
                     /*
@@ -279,22 +279,22 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                     if (dice <= 40)
                     {
                         enemyMove = "defend";
-                        action.attackMethod();
+                        //action.attackMethod();
                     }
                     else if (dice >= 41 && dice < 56)
                     {
                         enemyMove = "counter";
-                        strikeFlag = true;
-                        action.strikeMethod();
+                        //strikeFlag = true;
+                       // action.strikeMethod();
                     }
                     else if (dice >= 56 && dice < 62)
                     {
-                        action.chargeMethod();
+                        //action.chargeMethod();
                         enemyMove = "giveUp";
                     }
                     else
                     {
-                        action.atkMagMethod();
+                       // action.atkMagMethod();
                         enemyMove = "defMagic";
                     }
                 }
@@ -304,29 +304,45 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                     if (dice <= 15)
                     {
                         enemyMove = "defend";
-                        action.attackMethod();
+                      //  action.attackMethod();
                     }
                     else if (dice >= 15 && dice > 31)
                     {
                         enemyMove = "counter";
-                        strikeFlag = true;
-                        action.strikeMethod();
+                       // strikeFlag = true;
+                       // action.strikeMethod();
                     }
                     else if (dice >= 31 && dice < 42)
                     {
-                        action.chargeMethod();
+                       // action.chargeMethod();
                         enemyMove = "giveUp";
                     }
                     else
                     {
-                        action.atkMagMethod();
+                        //action.atkMagMethod();
                         enemyMove = "defMagic";
                     }
                 }
 
 
-                /*
-                move = Random.Range(1, 5); //chooses a number between 1 and 4 //neeed 5
+                switch (enemyMove)
+                {
+                    case "defend":
+                        move = 1;
+                        break;
+                    case "counter":
+                        move = 2;
+                        break;
+                    case "giveUp":
+                        move = 3;
+                        break;
+
+                    case "defMagic":
+                        move = 4;
+                        break;
+
+                }
+                //move = Random.Range(1, 5); //chooses a number between 1 and 4 //neeed 5
                 //Set the appropiate methods
                 
                 // consider replacing with a Switch Statement instead
@@ -356,7 +372,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                     action.defMagMethod();
                     
                 }
-                */
+                
 
 
                 buttonList[selectedButton].action();
@@ -455,22 +471,22 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                     {
                         enemyMove = "Attack";
                         Debug.Log("Skelly Attack Case I"); //need this to figure out how I broke combat :O
-                        action.attackMethod();
+                        //action.attackMethod();
                     }
                     else if (dice >= 14 && dice < 28)
                     {
                         enemyMove = "Strike";
-                        strikeFlag = true;
-                        action.strikeMethod();
+                        //strikeFlag = true;
+                        //action.strikeMethod();
                     }
                     else if (dice >= 28 && dice < 42)
                     {
-                        action.chargeMethod();
+                        //action.chargeMethod();
                         enemyMove = "charge";
                     }
                     else
                     {
-                        action.atkMagMethod();
+                       // action.atkMagMethod();
                         enemyMove = "atkMagic";
                     }
                 }
@@ -481,22 +497,22 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                     {
                         enemyMove = "Attack";
                         Debug.Log("Skelly Attack Case II");
-                        action.attackMethod();
+                        //action.attackMethod();
                     }
                     else if (dice >= 11 && dice < 41)
                     {
                         enemyMove = "Strike";
-                        strikeFlag = true;
-                        action.strikeMethod();
+                        //strikeFlag = true;
+                       // action.strikeMethod();
                     }
                     else if (dice >= 41 && dice < 83)
                     {
-                        action.chargeMethod();
+                        //action.chargeMethod();
                         enemyMove = "charge";
                     }
                     else
                     {
-                        action.atkMagMethod();
+                        //action.atkMagMethod();
                         enemyMove = "atkMagic";
                     }
                 }
@@ -507,22 +523,22 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                     {
                         enemyMove = "Attack";
                         Debug.Log("Skelly Attack Case III");
-                        action.attackMethod();
+                       // action.attackMethod();
                     }
                     else if (dice >= 26 && dice < 66)
                     {
                         enemyMove = "Strike";
-                        strikeFlag = true;
-                        action.strikeMethod();
+                       // strikeFlag = true;
+                       // action.strikeMethod();
                     }
                     else if (dice >= 67 && dice < 87)
                     {
-                        action.chargeMethod();
+                       // action.chargeMethod();
                         enemyMove = "charge";
                     }
                     else
                     {
-                        action.atkMagMethod();
+                        //action.atkMagMethod();
                         enemyMove = "atkMagic";
                     }
                 }
@@ -533,31 +549,47 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                     {
                         enemyMove = "Attack";
                         Debug.Log("Skelly Attack Case IV"); 
-                        action.attackMethod();
+                       // action.attackMethod();
                     }
                     else if (dice >= 41 && dice < 81)
                     {
                         enemyMove = "Strike";
-                        strikeFlag = true;
-                        action.strikeMethod();
+                      //  strikeFlag = true;
+                       // action.strikeMethod();
                     }
                     else if (dice >= 82 && dice < 92)
                     {
-                        action.chargeMethod();
+                        //action.chargeMethod();
                         enemyMove = "charge";
                     }
                     else
                     {
-                        action.atkMagMethod();
+                        //action.atkMagMethod();
                         enemyMove = "atkMagic";
                     }
                 }
 
 
+                switch (enemyMove)
+                {
+                    case "attack":
+                        move = 1;
+                        break;
+                    case "strike":
+                        move = 2;
+                        break;
+                    case "charge":
+                        move = 3;
+                        break;
 
+                    case "atkMagic":
+                        move = 4;
+                        break;
+
+                }
 
                 //Set the appropiate methods
-                /*
+
                 if (move == 1)
                 {
                     action.attackMethod(); //call the attack action from the skeleton script 
@@ -580,7 +612,7 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
                     action.atkMagMethod();
                     enemyMove = "atkMagic";
                 }
-                */
+                
                 //Debug.Log(strikeFlag);
 
 
