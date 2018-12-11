@@ -623,7 +623,7 @@ public class TileMap : MonoBehaviour
     public void ChangeUnit()
     {
         unitSelector++;
-        if (unitSelector >= selectedUnit.Count)
+        if (unitSelector >= selectedUnit.Count || selectedUnit[unitSelector].GetComponent<Unit>().isEnemy)
         {
             unitSelector = 0;
             Debug.Log("Setting unitSelector to 0");

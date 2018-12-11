@@ -767,7 +767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileX: 0
   tileY: 0
-  map: {fileID: 0}
+  map: {fileID: 1319584461}
 --- !u!65 &242548341
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -867,7 +867,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileX: 0
   tileY: 0
-  map: {fileID: 0}
+  map: {fileID: 1319584461}
 --- !u!65 &275652340
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2190,7 +2190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileX: 0
   tileY: 0
-  map: {fileID: 0}
+  map: {fileID: 1319584461}
 --- !u!65 &422647255
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4535,7 +4535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileX: 0
   tileY: 0
-  map: {fileID: 0}
+  map: {fileID: 1319584461}
 --- !u!65 &894562215
 BoxCollider:
   m_ObjectHideFlags: 0

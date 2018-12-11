@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Name: TimelineEventClip
   m_EditorClassIdentifier: 
   template:
-    HandlerKey: 
+    HandlerKey: None
     IsMethodWithParam: 0
     InvokeEventsInEditMode: 0
     TargetObject: {fileID: 0}

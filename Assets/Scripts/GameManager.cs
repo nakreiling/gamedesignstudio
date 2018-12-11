@@ -179,7 +179,10 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
+        else if (Input.GetKeyDown(KeyCode.Q)){
 
+            Application.Quit();
+        }
         //  Debug.Log("Rand is: " + rand);
         //Debug.Log(playerTurn + "equals Player Turn ");
         //Debug.Log("rand is: "+ rand);
@@ -347,6 +350,10 @@ public class GameManager : MonoBehaviour {
         }
         
 
+    }
+    public void pokoioi()
+    {
+        SceneManager.LoadScene("Overworld");
     }
 
     public void setEnemySprites()
