@@ -95,8 +95,7 @@ public class GameManager : MonoBehaviour {
 
         if(GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth() < 1)
         {
-            GameObject.FindWithTag("Player").SetActive(false);
-            rockPlayer.SetActive(true); //2nd verse same as the first, need a time buffer and then unload the scene, load overworld
+            
             //To do: Timed Buffer
             //Debug.Log("I am the Player and its time to leave!"); //Player died
             float battleEndHealth = GameObject.FindWithTag("Enemy").GetComponent<Stats>().getHealth(); //recording the Health of the surviving, need to put it into the Unit Manager...
@@ -106,6 +105,8 @@ public class GameManager : MonoBehaviour {
             UnitManager.healthValue[UnitManager.battleWinner] = (int)battleEndHealth;
             Debug.Log("Battle winner index " + UnitManager.battleWinner);
             Debug.Log("Battle winner health " + UnitManager.healthValue[UnitManager.battleWinner]);
+            GameObject.FindWithTag("Player").SetActive(false);
+            rockPlayer.SetActive(true); //2nd verse same as the first, need a time buffer and then unload the scene, load overworld
             SceneManager.LoadScene("OverWorld"); //, LoadSceneMode.Single); //might need to switch to Asynchronous mode
         }
         else if (GameObject.FindWithTag("Enemy").GetComponent<Stats>().getHealth() < 1) //was <= 0
@@ -120,7 +121,7 @@ public class GameManager : MonoBehaviour {
             UnitManager.healthValue[UnitManager.battleWinner] = (int)battleEndHealth;
             Debug.Log("Battle winner index " + UnitManager.battleWinner);
             Debug.Log("Battle winner health " + UnitManager.healthValue[UnitManager.battleWinner]);
-
+            
             SceneManager.LoadScene("OverWorld"); //, LoadSceneMode.Single);
         }
         //else if (GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth() <= 0)

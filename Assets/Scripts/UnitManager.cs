@@ -123,6 +123,22 @@ public class UnitManager : MonoBehaviour {
             enemyRotation = value;
         }
     }
+
+
+    public void Reset() //From the game title screen, this will reset the static class, effectively resetting the game
+    {
+     c static UnitManager Instance; //instance what does that mean here?
+    public static List<int> unitXList;
+    public static List<int> unitYList;
+    public static List<int> healthValue;
+    public static int selectedUnit;
+    public static int selectedEnemy;
+    public static int battleWinner;
+    public static bool tileMapUsed = false;
+}
+
+
+    /*
     //Player Static Data recorded for testing purposes here, single target only right now
     public float PlayerH = PlayerBattleResultHealth; //this is just to test if info is being recorded from battle or not
     public Vector3 PlayerP = PlayerMapPosition; //This doesn't work like how I thought
@@ -131,6 +147,7 @@ public class UnitManager : MonoBehaviour {
     public float EnemyH = EnemyBattleResultHealth;
     public Vector3 EnemyP = EnemyMapPosition;
     public Quaternion EnemyR = EnemyRotation;
+    */
 
 }
 

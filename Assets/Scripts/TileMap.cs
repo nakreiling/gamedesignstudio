@@ -65,12 +65,18 @@ public class TileMap : MonoBehaviour
             if (UnitManager.battleWinner == UnitManager.selectedUnit)
             {
                 Debug.Log("The PLAYER won the battle!");
-                selectedUnit[UnitManager.battleWinner].SetActive(false);
+                selectedUnit.Remove(selectedUnit[UnitManager.selectedEnemy]);
+                UnitManager.unitXList.Remove(UnitManager.unitXList[UnitManager.selectedEnemy]);
+                UnitManager.unitYList.Remove(UnitManager.unitYList[UnitManager.selectedEnemy]);
+                UnitManager.healthValue.Remove(UnitManager.healthValue[UnitManager.selectedEnemy]);
             }
             else if (UnitManager.battleWinner == UnitManager.selectedEnemy)
             {
                 Debug.Log("The ENEMY won the battle!");
-                selectedUnit[UnitManager.battleWinner].SetActive(false);
+                selectedUnit.Remove(selectedUnit[UnitManager.selectedUnit]);
+                UnitManager.unitXList.Remove(UnitManager.unitXList[UnitManager.selectedUnit]);
+                UnitManager.unitYList.Remove(UnitManager.unitYList[UnitManager.selectedUnit]);
+                UnitManager.healthValue.Remove(UnitManager.healthValue[UnitManager.selectedUnit]);
             }
 
             for (int k = 0; k < UnitManager.unitXList.Count; k++)
