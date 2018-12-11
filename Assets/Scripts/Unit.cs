@@ -11,6 +11,7 @@ public class Unit : MonoBehaviour
     public TileMap map;
     public bool isDead;
     public Node targetNode;
+    public int healthBar;
 
     public List<Node> currentPath = null;
 
@@ -39,6 +40,7 @@ public class Unit : MonoBehaviour
         }
     }
 
+    /*
     public void MoveNextTile()
     {
         float remainingMovement = moveSpeed;
@@ -68,5 +70,5 @@ public class Unit : MonoBehaviour
                 currentPath = null;
             }
         }
-    }
+    }*/
 }

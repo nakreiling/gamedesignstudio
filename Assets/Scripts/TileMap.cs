@@ -44,6 +44,8 @@ public class TileMap : MonoBehaviour
         {
             UnitManager.unitXList = new List<int>();
             UnitManager.unitYList = new List<int>();
+            UnitManager.healthValue = new List<int>();
+            UnitManager.deletedUnits = new List<int>();
             for (int k = 0; k < selectedUnit.Count; k++)
             {
                 selectedUnit[k].GetComponent<Unit>().tileX = (int)selectedUnit[k].transform.position.x;
@@ -53,19 +55,47 @@ public class TileMap : MonoBehaviour
                 UnitManager.tileMapUsed = true;
                 UnitManager.unitXList.Add(selectedUnit[k].GetComponent<Unit>().tileX);
                 UnitManager.unitYList.Add(selectedUnit[k].GetComponent<Unit>().tileY);
+                selectedUnit[k].GetComponent<Unit>().healthBar = 100;
+                UnitManager.healthValue.Add(selectedUnit[k].GetComponent<Unit>().healthBar);
             }
         }
         else
         {
             Debug.Log("Instantiating units from static array.");
-            Debug.Log("Length of selectedUnit " + selectedUnit.Count);
-            Debug.Log("Length of unitXList " + UnitManager.unitXList.Count);
+            //Debug.Log("Length of selectedUnit " + selectedUnit.Count);
+            //Debug.Log("Length of unitXList " + UnitManager.unitXList.Count);
+            if (UnitManager.battleWinner == UnitManager.unitS) {
+                Debug.Log("The PLAYER won the battle.");
+                Debug.Log("Removing enemy at index " + UnitManager.enemyS);
+                //selectedUnit[UnitManager.enemyS].SetActive(false);
+                UnitManager.deletedUnits.Add(UnitManager.enemyS);
+                //selectedUnit.Remove(selectedUnit[UnitManager.enemyS]);
+                //UnitManager.unitXList.Remove(UnitManager.unitXList[UnitManager.enemyS]);
+                //UnitManager.unitYList.Remove(UnitManager.unitYList[UnitManager.enemyS]);
+                //UnitManager.healthValue.Remove(UnitManager.healthValue[UnitManager.enemyS]);
+            } else if (UnitManager.battleWinner == UnitManager.enemyS) {
+                Debug.Log("The ENEMY won the battle.");
+                Debug.Log("Removing unit at index " + UnitManager.unitS);
+                //selectedUnit[UnitManager.unitS].SetActive(false);
+                UnitManager.deletedUnits.Add(UnitManager.unitS);
+                //selectedUnit.Remove(selectedUnit[UnitManager.unitS]);
+                //UnitManager.unitXList.Remove(UnitManager.unitXList[UnitManager.unitS]);
+                //UnitManager.unitYList.Remove(UnitManager.unitYList[UnitManager.unitS]);
+                //UnitManager.healthValue.Remove(UnitManager.healthValue[UnitManager.unitS]);
+            }
             for (int k = 0; k < UnitManager.unitXList.Count; k++)
             {
-                selectedUnit[k].GetComponent<Unit>().tileX = UnitManager.unitXList[k];
-                selectedUnit[k].GetComponent<Unit>().tileY = UnitManager.unitYList[k];
-                selectedUnit[k].transform.position = this.TileCoordToWorldCoord(UnitManager.unitXList[k], UnitManager.unitYList[k]);
-                selectedUnit[k].GetComponent<Unit>().map = this;
+                if (!UnitManager.deletedUnits.Contains(k)) {
+                    selectedUnit[k].GetComponent<Unit>().tileX = UnitManager.unitXList[k];
+                    selectedUnit[k].GetComponent<Unit>().tileY = UnitManager.unitYList[k];
+                    selectedUnit[k].GetComponent<Unit>().healthBar = UnitManager.healthValue[k];
+                    selectedUnit[k].GetComponentInChildren<Stats>().setHealth(UnitManager.healthValue[k]);
+                    Debug.Log("Health value for " + k + " unit: " + UnitManager.healthValue[k]);
+                    selectedUnit[k].transform.position = this.TileCoordToWorldCoord(UnitManager.unitXList[k], UnitManager.unitYList[k]);
+                    selectedUnit[k].GetComponent<Unit>().map = this;
+                } else {
+                    selectedUnit[k].SetActive(false);
+                }
             }
         }
         GenerateMapData();
@@ -73,7 +103,17 @@ public class TileMap : MonoBehaviour
         GenerateMapVisuals();
         unitSelector = 0;
         //issue: this is only for test purposes need to be able to set health based on last known position of any active unit
-
+        if (!GameObject.FindWithTag("Enemy")) {
+            // quit the game if there are no enemies left
+            Debug.Log("No more enemies. You win!");
+            return;
+        }
+        if (!GameObject.FindWithTag("Player")) {
+            // quit the game if there are no players left
+            Debug.Log("No more units to control. You fuckin lost. You're a fuckin loser lol");
+            return;
+        }
+            
         //Reposition (Player) and alter health accordingly
         //need to put in a check here to SetActive to 'false' if health is at 0 or less i.e. if the unit should be dead remove it from play
        // GameObject.FindGameObjectWithTag("Enemy").transform.position = UnitManager.EnemyMapPosition;
@@ -299,13 +339,19 @@ public class TileMap : MonoBehaviour
             }
             */
             //Now testing if statements to see if 1) They correctly identify the Enemy and player 2) Health is being loaded up correctly based on assumption of correct ID
+            UnitManager.unitS = unitSelector;
+            UnitManager.enemyS = victim;
+
             for (int k = 0; k < selectedUnit.Count; k++)
             {
                 UnitManager.unitXList[k] = selectedUnit[k].GetComponent<Unit>().tileX;
                 UnitManager.unitYList[k] = selectedUnit[k].GetComponent<Unit>().tileY;
+                UnitManager.healthValue[k] = selectedUnit[k].GetComponent<Unit>().healthBar;
                 Debug.Log(UnitManager.unitXList[k] + ", " + UnitManager.unitYList[k]);
+                Debug.Log("Health for unit at index " + k + ": " + UnitManager.healthValue[k]);
             }
-            if (selectedUnit[victim].CompareTag("Enemy"))
+
+            /*if (selectedUnit[victim].CompareTag("Enemy"))
             {
                 float targetHealth = selectedUnit[victim].GetComponent<Unit>().GetComponentInChildren<Stats>().getHealth(); //unit being attacked
                 UnitManager.EnemyBattleResultHealth = targetHealth;
@@ -357,7 +403,7 @@ public class TileMap : MonoBehaviour
 
 
 
-            }
+            }*/
             
             SceneManager.LoadScene("BattleScene");// if it works, it will simply switch no record of stats will be maintained
 
@@ -599,6 +645,7 @@ public class TileMap : MonoBehaviour
                 }
             }
         }
+        MoveEnemies();
         //GeneratePathTo(0, 4, 3);
     }
 
@@ -629,5 +676,84 @@ public class TileMap : MonoBehaviour
             Debug.Log("Could not find a unit to pursue.");
         }
         return closestUnitSelector;
+    }
+
+    public void MoveUnit () {
+        float remainingMovement = 2;
+        int count = 0;
+        if (!UnitManager.deletedUnits.Contains(unitSelector)) {
+            while (count < 2) {
+                if (selectedUnit[unitSelector].GetComponent<Unit>().currentPath == null)
+                    return;
+
+                // Get cost from current tile to next tile
+                remainingMovement -= selectedUnit[unitSelector].GetComponent<Unit>().map.CostToEnterTile(
+                    selectedUnit[unitSelector].GetComponent<Unit>().currentPath[0].x,
+                    selectedUnit[unitSelector].GetComponent<Unit>().currentPath[0].y,
+                    selectedUnit[unitSelector].GetComponent<Unit>().currentPath[1].x,
+                    selectedUnit[unitSelector].GetComponent<Unit>().currentPath[1].y);
+
+                // Move us to the next tile in the sequence
+                selectedUnit[unitSelector].GetComponent<Unit>().tileX = selectedUnit[unitSelector].GetComponent<Unit>().currentPath[1].x;
+                selectedUnit[unitSelector].GetComponent<Unit>().tileY = selectedUnit[unitSelector].GetComponent<Unit>().currentPath[1].y;
+
+                selectedUnit[unitSelector].transform.position = selectedUnit[unitSelector].GetComponent<Unit>().map.TileCoordToWorldCoord(
+                    selectedUnit[unitSelector].GetComponent<Unit>().tileX,
+                    selectedUnit[unitSelector].GetComponent<Unit>().tileY);   // Update our unity world position
+
+                // Remove the old "current" tile
+                selectedUnit[unitSelector].GetComponent<Unit>().currentPath.RemoveAt(0);
+                count++;
+                if (selectedUnit[unitSelector].GetComponent<Unit>().currentPath.Count == 1) {
+                    // We only have one tile left in the path, and that tile MUST be our ultimate
+                    // destination -- and we are standing on it!
+                    // So let's just clear our pathfinding info.
+                    selectedUnit[unitSelector].GetComponent<Unit>().currentPath = null;
+                }
+            }
+            selectedUnit[unitSelector].GetComponent<Unit>().currentPath = null;
+        }
+    }
+
+    public void MoveEnemies() {
+        float remainingMovement = 2;
+        int count = 0;
+        if (!UnitManager.deletedUnits.Contains(unitSelector)) {
+            for (int k = 0; k < selectedUnit.Count; k++) {
+                if (selectedUnit[k].GetComponent<Unit>().isEnemy == true) {
+                    count = 0;
+                    while (count < 2) {
+                        if (selectedUnit[k].GetComponent<Unit>().currentPath == null)
+                            return;
+
+                        // Get cost from current tile to next tile
+                        remainingMovement -= selectedUnit[k].GetComponent<Unit>().map.CostToEnterTile(
+                            selectedUnit[k].GetComponent<Unit>().currentPath[0].x,
+                            selectedUnit[k].GetComponent<Unit>().currentPath[0].y,
+                            selectedUnit[k].GetComponent<Unit>().currentPath[1].x,
+                            selectedUnit[k].GetComponent<Unit>().currentPath[1].y);
+
+                        // Move us to the next tile in the sequence
+                        selectedUnit[k].GetComponent<Unit>().tileX = selectedUnit[k].GetComponent<Unit>().currentPath[1].x;
+                        selectedUnit[k].GetComponent<Unit>().tileY = selectedUnit[k].GetComponent<Unit>().currentPath[1].y;
+
+                        selectedUnit[k].transform.position = selectedUnit[unitSelector].GetComponent<Unit>().map.TileCoordToWorldCoord(
+                            selectedUnit[k].GetComponent<Unit>().tileX,
+                            selectedUnit[k].GetComponent<Unit>().tileY);   // Update our unity world position
+
+                        // Remove the old "current" tile
+                        selectedUnit[k].GetComponent<Unit>().currentPath.RemoveAt(0);
+                        count++;
+                        if (selectedUnit[k].GetComponent<Unit>().currentPath.Count == 1) {
+                            // We only have one tile left in the path, and that tile MUST be our ultimate
+                            // destination -- and we are standing on it!
+                            // So let's just clear our pathfinding info.
+                            selectedUnit[k].GetComponent<Unit>().currentPath = null;
+                        }
+                    }
+                    selectedUnit[k].GetComponent<Unit>().currentPath = null;
+                }
+            }
+        }
     }
 }

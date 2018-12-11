@@ -12,7 +12,12 @@ public class UnitManager : MonoBehaviour {
     public static UnitManager Instance; //instance what does that mean here?
     public static List<int> unitXList;
     public static List<int> unitYList;
+    public static List<int> healthValue;
+    public static List<int> deletedUnits;
     public static bool tileMapUsed = false;
+    public static int unitS;
+    public static int enemyS;
+    public static int battleWinner;
     private static float playerBattleResultHealth, enemyBattleResultHealth;
     private static Vector3 playerMapPosition, enemyMapPosition;
     private static Quaternion playerRotation, enemyRotation;  //idea is to use these two variables in conjunction to record where on the map the two combatants are before switching 
