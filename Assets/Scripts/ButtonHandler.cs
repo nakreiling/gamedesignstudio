@@ -84,7 +84,10 @@ public class ButtonHandler : MonoBehaviour //change name to TurnHandler when mer
         DefMag.SetActive(false);
         giveUp.SetActive(false);
         */
-      
+        GameObject.FindWithTag("Enemy").GetComponent<Stats>().setHealth(UnitManager.healthValue[UnitManager.enemyS]); //we need a setter for the Units health that can set it based on what is from the Static (DB) class
+        Debug.Log("The Battle Mode has started,known health of Enemy is: " + UnitManager.healthValue[UnitManager.enemyS]);//Derpy?
+        GameObject.FindWithTag("Player").GetComponent<Stats>().setHealth(UnitManager.healthValue[UnitManager.unitS]); //okay so if I did this correctly we will pass Health data (and more) from the two scenes
+        Debug.Log("The Battle Mode has started,known health of pdog is: " + UnitManager.healthValue[UnitManager.unitS]);//RRREEEEE
 
 
     }

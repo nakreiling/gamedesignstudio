@@ -156,4 +156,8 @@ public class UIManager : MonoBehaviour {
         Debug.Log("Back to Title Screen");
         SceneManager.LoadScene("Title-Screen");
     }
+    public void exit()
+    {
+        Application.Quit();
+    }
 }

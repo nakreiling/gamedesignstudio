@@ -10,8 +10,14 @@ EditorBuildSettings:
     guid: 4a857834fa47cbd4a99b976399e8e46b
   - enabled: 1
     path: Assets/Scenes/OverWorld.unity
-    guid: 8fb296f002a35f94ea04a5010a2085f0
+    guid: 970cbb8c7aefa7849a96a64ccafa5b21
   - enabled: 1
     path: Assets/Scenes/BattleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Lose.unity
+    guid: bdb8d36d68af1df45a5bf8e47fea665a
+  - enabled: 1
+    path: Assets/Scenes/Win.unity
+    guid: 7c97373d03fafc344899ae775d07d9ce
   m_configObjects: {}

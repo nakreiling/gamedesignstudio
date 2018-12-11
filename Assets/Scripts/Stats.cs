@@ -21,6 +21,13 @@ public class Stats : MonoBehaviour {
     {
         return currentHealth;
     }
+    public float setHealth(float healthFromStaticClass)
+    {
+        float temp = healthFromStaticClass;
+        currentHealth = temp;
+        healthFill.value = temp;
+        return currentHealth;
+    }
 
     public void ChangeHealth(float amount)
     {

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
     public static bool playerTurn, timelineActive, promptOver;
@@ -31,6 +32,8 @@ public class GameManager : MonoBehaviour {
 
     void Start() {
 
+        GameObject[] player_units = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] enemy_units = GameObject.FindGameObjectsWithTag("Enemy");
         timelineActive = false;
 
         //Get list of objects that can be set active later
@@ -200,19 +203,45 @@ public class GameManager : MonoBehaviour {
         }
 
 
-
-
-        if (GameObject.FindGameObjectsWithTag("Player").Length < 1)
+        if (GameObject.FindGameObjectsWithTag("Player").Length < 1 || GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth() < 1)
         {
-            rockPlayer.SetActive(true);
+           // GameObject.FindWithTag("Player").SetActive(false);
+            rockPlayer.SetActive(true); //2nd verse same as the first, need a time buffer and then unload the scene, load overworld
+                                        //To do: Timed Buffer
+                                        //Debug.Log("I am the Player and its time to leave!"); //Player died
+            float battleEndHealth = GameObject.FindWithTag("Enemy").GetComponent<Stats>().getHealth(); //recording the Health of the surviving, need to put it into the Unit Manager...
+            UnitManager.battleWinner = UnitManager.enemyS;
+            UnitManager.healthValue[UnitManager.battleWinner] = (int)battleEndHealth;
+            Debug.Log("NPC survived with: " + battleEndHealth);
+            Debug.Log("Battle winner index: " + UnitManager.battleWinner);
+            SceneManager.LoadScene("OverWorld"); //, LoadSceneMode.Single); //might need to switch to Asynchronous mode
         }
-        else if (GameObject.FindGameObjectsWithTag("Enemy").Length < 1)
-        {
-            rockEnemy.SetActive(true);
+        else if (GameObject.FindGameObjectsWithTag("Enemy").Length < 1 || GameObject.FindWithTag("Enemy").GetComponent<Stats>().getHealth() < 1) //was <= 0
+        {  //To do: Delete the Unit from the overall Unit list
+           // GameObject.FindWithTag("Enemy").SetActive(false); //So... if this works....nullreference error? should have a time buffer and unload the scene
+            rockEnemy.SetActive(true); //I think we have to explicitly remove the NPC as well?
+            //Debug.Log("I'm out of Here! Love Skelly."); //NPC died
+            float battleEndHealth = GameObject.FindWithTag("Player").GetComponent<Stats>().getHealth();
+            UnitManager.battleWinner = UnitManager.unitS;
+            UnitManager.healthValue[UnitManager.battleWinner] = (int)battleEndHealth;
+            Debug.Log("Player survived with: " + battleEndHealth); //Derp a lerp
+            Debug.Log("Battle winner index: " + UnitManager.battleWinner);
+            SceneManager.LoadScene("OverWorld"); //, LoadSceneMode.Single);
+                                                 
+                                                 /*if (GameObject.FindGameObjectsWithTag("Player").Length < 1)
+                                                 {
+                                                     rockPlayer.SetActive(true);
+
+                                                 }
+                                                 else if (GameObject.FindGameObjectsWithTag("Enemy").Length < 1)
+                                                 {
+                                                     rockEnemy.SetActive(true);
+                                                 }*/
+
         }
-        //Debug.Log(timelineActive);
-        //turn off ui during cutscenes
-        if (timelineActive == true)
+            //Debug.Log(timelineActive);
+            //turn off ui during cutscenes
+            if (timelineActive == true)
         {
             foreach (GameObject go in gos)
             {
